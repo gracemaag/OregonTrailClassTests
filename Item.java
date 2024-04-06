@@ -60,7 +60,7 @@ public class Item
 		 
 		 String giveString = " ";
 		 int randIntGiveAmount = 0;
-		 while (randIntGiveAmount == 0) { randIntGiveAmount = rand.nextInt(5); }
+		 while (randIntGiveAmount == 0 || randIntGiveAmount > itemAmounts.get(randIntGive)) { randIntGiveAmount = rand.nextInt(5); }
 		 if (randIntGive == 3)
 		 {
 			 giveString = "pounds of Food";
