@@ -1,6 +1,16 @@
-package oregonTrail;
+/**
+ *Landmark subclass, contains methods to get and display Landmarks, as well as the buttons to
+ *Look Around landmarks and Talk To people when located there.
+ * @author Savannah Larsen
+ * @version 1.0 9 April 2024
+ * @filename Landmark.java
+ * 
+ */
+package OregonTrailMVP;
 
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
 
 public class Landmark extends Location
 {
@@ -9,6 +19,7 @@ public class Landmark extends Location
 	ArrayList<String> landmarkNames = new ArrayList<String>();
 	ArrayList<String> landmarkDistance = new ArrayList<String>();
 	
+	int currentIndex = 0;
 	private static final String[] namedLandmarks = {"Independence","Kansas River Crossing", 
 			"Big Blue River Crossing","Fort Kearney", "Chimney Rock"}; 
 	private static final int[] distanceToLandmarks = {0, 102, 82, 118, 250}; // distance to landmark
@@ -19,6 +30,17 @@ public class Landmark extends Location
 		    "Make sure you have extras of everything in case something happens.",
 		    "Be careful when crossing the river, especially the deeper kind.",
 		    "Trading is often far cheaper than buying at forts, but you never know what you'll get."
+		};
+	
+	ImageIcon independance = new ImageIcon("C:\\Users\\gemaa\\Downloads\\Independance.jpg");
+	ImageIcon kansasRiver = new ImageIcon("C:\\Users\\gemaa\\Downloads\\KansasRiverCrossing.jpg");
+	ImageIcon blueRiver = new ImageIcon("C:\\Users\\gemaa\\Downloads\\BigBlueRiver.jpg");
+	ImageIcon fortKearney = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\fortKearny.jpg");
+	
+	
+	private final ImageIcon[] landmarkImages = 
+		{
+			independance, kansasRiver, blueRiver, fortKearney
 		};
 	
 	/**
@@ -46,43 +68,32 @@ public class Landmark extends Location
 	 */
 	public int distanceFrom()
 	{   
-		int currentDistance = getTotalTraveled(); // Use getTotalTraveled from superclass
-
-        for (int distance : distanceToLandmarks) {
-            if (distance > currentDistance) {
-                return distance - currentDistance;
-            }
-            currentDistance += distance;
-        }
-        return 0; // No more landmarks
+		int temp = distanceToLandmarks[currentIndex];
+		return temp;
 	}
 	
 	/**
 	 * Retrieves landmark names
-	 * @param selectedLandmark gets landmark title from array list
 	 * @return name of landmark, otherwise returns "cannot be found"
 	 * 
 	 */
-	
-	public String getLandmarkName(String selectedLandmark)
+	public String getLandmarkName()
 	{
-		int index = landmarkNames.indexOf(selectedLandmark);
-        if (index != -1) {
-            return landmarkNames.get(index);
-        }
+		if(currentIndex < 4) {
+		return landmarkNames.get(currentIndex);
+		}
         return "Error - Location cannot be found."; // if landmark name not found
 	}
 	
 	/**
 	 *
 	 * Checks if current landmark is a fort
-	 * @param location -
 	 * @return true if landmark is a fort, false otherwise
 	 * 
 	 */
-	public boolean isFort(int location, int landmarkType)
+	public boolean isFort()
 	{
-        String landmark = landmarkNames.get(location);
+        String landmark = landmarkNames.get(currentIndex);
         
         return landmark.contains("Fort"); // Simple check if landmark name contains "Fort"
 	}
@@ -106,7 +117,7 @@ public class Landmark extends Location
 	 */
 	public void lookAroundOption()
 	{
-		String landmarkName = landmarkNames.get(0);
+		String landmarkName = landmarkNames.get(currentIndex);
 		String currentDate = DateString(); // get current date from superclass
 		
 		 System.out.println("[Photo Placeholder]");
@@ -117,15 +128,41 @@ public class Landmark extends Location
 	/**
 	 * Displays randomized dialogue upon selection
 	 * @param dialogueType - selects type of dialogue displayed
-	 * @return index number of dialogue, otherwise return 0 
+	 * @return index number of dialogue
 	 */
-	public int talkToOption(int dialogueType)
+	public String talkToOption(int dialogueType)
 	{
 		System.out.println(dialogues[dialogueCounter]);
 		
 		// Cycle through dialogues
 	    dialogueCounter = (dialogueCounter + 1) % dialogues.length;
 		
-	    return dialogueCounter;
+	    return dialogues[dialogueCounter];
+	}
+	/**
+	 * gets the current landmark number you are at or approaching
+	 * @return index of current landmark
+	 */
+	public int getIndex() 
+	{
+		return currentIndex;
+	}
+	
+	/**
+	 * increments the landmark to the next landmark 
+	 */
+	public void landmarkPassed() {
+		currentIndex++;
+	}
+	
+	/**
+	 * gets the proper image icon of the landmark
+	 * @return the image icon of the current landmark
+	 */
+	public ImageIcon getLandmarkIcon() {
+		if(currentIndex > 0) {
+		return landmarkImages[currentIndex-1];
+		}
+		return independance ;
 	}
 }

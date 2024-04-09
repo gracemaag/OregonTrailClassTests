@@ -5,13 +5,14 @@
 	@version 1.0 9 April 2024
 	@filename Food.java
 */
-package mpv;
+package OregonTrailMVP;
 
 import java.util.ArrayList;
 
 public class Food extends Item 
 {
-	static int rationsAmount = 0; // Amount of rations consumed per day
+
+	static int rationsAmount = 15; // Amount of rations consumed per day
 
 	/**
 	 * Constructor for the Food Class
@@ -29,7 +30,7 @@ public class Food extends Item
 	 * @param itemAmounts - Contains the amount of each type of item in the wagon
 	 * @param amount - The amount of food purchased (in pounds)
 	 */
-	public void Buy(ArrayList<Item> itemContents, ArrayList<Item> itemAmounts, int amount)
+	public void Buy(ArrayList<Item> itemContents, ArrayList<Integer> itemAmounts, int amount)
 	{
 		itemWeight =+ amount;
 	}
@@ -38,6 +39,8 @@ public class Food extends Item
 	 * Changes the rations based on the user's input, 
 	 * the amount of living wagon members weighs in on 
 	 * the amount of food consumed
+	 * Formulas are taken from the resource You have Died of Dysentery by
+	 * R Philip Bouchard
 	 * @param memberAmount
 	 * @param rationsValue
 	 */
@@ -58,12 +61,21 @@ public class Food extends Item
 	}
 	
 	/**
-	 * Changes the amount of pounds of food based on the 
-	 * daily rations inputted by the user
+	 * Gets the amount of food rations 
+	 * @return - The amount of rations per person per day
 	 */
-	public void dailyRations()
+	public int getRationsAmount() {
+		return rationsAmount;
+	}
+	
+	/**
+	 * Gets the weight of the food
+	 * @param itemAmounts - Array of amounts of each item
+	 * @return - The weight of the food in the wagon
+	 */
+	public int getWeight(ArrayList<Integer> itemAmounts) 
 	{
-		this.itemWeight =- rationsAmount;
+		return itemAmounts.get(3);
 	}
 	
 }

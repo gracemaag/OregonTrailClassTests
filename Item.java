@@ -6,7 +6,7 @@
 	@filename Item.java
 */
 
-package mpv;
+package OregonTrailMVP;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -49,7 +49,7 @@ public class Item
 	 */
 	static String getTradeMessage(ArrayList<Integer> itemAmounts)
 	{
-		// Getting the offer from the traveller
+		// Getting the offer from the traveler
 		 int randIntTrade = rand.nextInt(5);
 		 String tradeString = " ";
 		 int randIntAmount = 0;
@@ -80,7 +80,7 @@ public class Item
 			 
 		 }
 		 
-		 // Getting the want from the traveller (what the player owes)
+		 // Getting the want from the traveler (what the player owes)
 		 int randIntGive = 0;
 		 do // Ensures the player has the item requested, and that the item request/item given is not the same
 		 { 
@@ -126,7 +126,7 @@ public class Item
 	
 	/**
 	 * Updates the items in the player's wagon after they accept a trade
-	 * Removes items they gave, and adds items they recieved
+	 * Removes items they gave, and adds items they received
 	 * @param itemAmounts
 	 */
 	static void acceptTrade(ArrayList<Integer> itemAmounts)

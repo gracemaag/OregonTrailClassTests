@@ -6,16 +6,25 @@
 	@version 1.0 9 April 2024
 	@filename WagonMember.java
 */
-package mpv;
+package OregonTrailMVP;;
 
 public class WagonMember {
-	int memberName;
+	String memberName;
 	
 	/**
 	 * Constructor for the Wagon Member Class
 	 * @param name - Name of a wagon member
 	 */
-	public WagonMember (int name)
+	public WagonMember (String name)
+	{
+		memberName = name;
+	}
+	
+	/**
+	 * Sets name of the wagon member
+	 * @param name - Name of a wagon member
+	 */
+	public void setName(String name) 
 	{
 		memberName = name;
 	}
