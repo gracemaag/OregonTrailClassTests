@@ -21,8 +21,16 @@ public class Landmark extends Location
 	
 	int currentIndex = 0;
 	private static final String[] namedLandmarks = {"Independence","Kansas River Crossing", 
-			"Big Blue River Crossing","Fort Kearney", "Chimney Rock"}; 
-	private static final int[] distanceToLandmarks = {0, 102, 82, 118, 250}; // distance to landmark
+			"Big Blue River Crossing","Fort Kearney", "Chimney Rock", "Fort Laramie",
+			"Independence Rock", "South Pass", "Green River Crossing", "Soda Springs",
+			"Fort Hall", "Snake River Crossing", "Fort Boise", "Blue Mountains",
+			"Fort Walla Walla", "The Dalles", "Willamette Valley"}; 
+	// green river crossway/dalles crossway/columbia river implementation later? 
+	private static final int[] distanceToLandmarks = {0, 102, 
+							  82, 118, 250, 86,
+							  190, 120, 57, 143,
+							  57, 182, 113, 160
+							  55, 120, 100}; // distance to landmark
 	
 	private int dialogueCounter = 0; // Counter to cycle through dialogues
 	private final String[] dialogues = 
@@ -79,7 +87,7 @@ public class Landmark extends Location
 	 */
 	public String getLandmarkName()
 	{
-		if(currentIndex < 4) {
+		if(currentIndex < 17) {
 		return landmarkNames.get(currentIndex);
 		}
         return "Error - Location cannot be found."; // if landmark name not found
