@@ -6,7 +6,7 @@
 	@filename Item.java
 */
 
-package mpv;
+package OregonTrailMVP;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,12 +22,10 @@ public class Item
 	static int giveAmount = 0;
 	static int tradeItem = 0;
 	static int giveItem = 0;
-
 	
 	/**
 	 * Constructor for the Item class
 	 * @param weight - Weight of the item as represented in the wagon
-	 * @param price - Price to purchase the item
 	 */
 	public Item (int weight, int price)
 	{
@@ -53,16 +51,7 @@ public class Item
 	 */
 	static String getTradeMessage(ArrayList<Integer> itemAmounts)
 	{
-		int randNameNum = rand.nextInt(5);
-		String travellerName = "";
-		if (randNameNum == 0) {travellerName = "Henry";}
-		if (randNameNum == 1) {travellerName = "George";}
-		if (randNameNum == 2) {travellerName = "Mary";}
-		if (randNameNum == 3) {travellerName = "Sarah";}
-		if (randNameNum == 4) {travellerName = "John";}
-		
-		
-		// Getting the offer from the traveller
+		// Getting the offer from the traveler
 		 int randIntTrade = rand.nextInt(5);
 		 String tradeString = " ";
 		 int randIntAmount = 0;
@@ -86,13 +75,14 @@ public class Item
 		 {
 			 tradeString = "pairs of Clothes";
 		 }
-
+		 
 		 if (randIntTrade == 4)
 		 {
 			return "Nobody wants to trade with you today.";
+			 
 		 }
 		 
-		 // Getting the want from the traveller (what the player owes)
+		 // Getting the want from the traveler (what the player owes)
 		 int randIntGive = 0;
 		 do // Ensures the player has the item requested, and that the item request/item given is not the same
 		 { 
@@ -111,11 +101,6 @@ public class Item
 		 // Creates a string based on the randomly selected item
 		 if (randIntGive == 3)
 		 {
-			 while (randIntGiveAmount == 0 || randIntGiveAmount * 100 > itemAmounts.get(randIntGive));
-			 {
-				 randIntGiveAmount = rand.nextInt(5);
-				 System.out.println(randIntGiveAmount);
-			 }
 			 giveString = "pounds of Food";
 			randIntGiveAmount = randIntGiveAmount * 100;
 		 }
@@ -131,7 +116,6 @@ public class Item
 		 {
 			 giveString = "pairs of Clothes";
 		 }
-
 		 
 		 // Variables necessary for the acceptTrade method
 		 tradeAmount = randIntAmount;
@@ -139,12 +123,12 @@ public class Item
 		 tradeItem = randIntTrade;
 		 giveItem = randIntGive;
 		
-		 return travellerName + " would like to trade " + randIntAmount + " " + tradeString + ". They want " + randIntGiveAmount + " " + giveString + ".";	 
+		 return "Traveler would like to trade " + randIntAmount + " " + tradeString + ". They want " + randIntGiveAmount + " " + giveString + ".";	 
 	}
 	
 	/**
 	 * Updates the items in the player's wagon after they accept a trade
-	 * Removes items they gave, and adds items they recieved
+	 * Removes items they gave, and adds items they received
 	 * @param itemAmounts
 	 */
 	static void acceptTrade(ArrayList<Integer> itemAmounts)
@@ -160,7 +144,7 @@ public class Item
 	 * Updates the wagon contents based on what the user wishes to buy from
 	 * the main. Item types are represented as values, and passed through all
 	 * methods as: 
-	 * 0 - Wagon Wheel 1 - Wagon Axle 2 - Clothing 3 - Food 4 - Oxen
+	 * 0 - Wagon Wheel 1 - Wagon Axle 2 - Clothing 3 - Food 
 	 * The total weight of the wagon is updated based on purchases
 	 * @param itemContents - The contents of the wagon (always the same)
 	 * @param itemAmounts - The amounts of each item in the wagon
@@ -174,12 +158,12 @@ public class Item
 		itemAmounts.set(itemType, currentTotal + amount);
 	}
 	
-	/** 
-	 * Returns the price of an item based on the item type number passed
+	/**
+	 * Returns the price of an item  based on the item type number passed
 	 * to the method. Each item has a number corresponding with it:
 	 * 0 - Wagon Wheel 1 - Wagon Axle 2 - Clothing 3 - Food 4 - Oxen
 	 * @param itemContents - The contents of the wagon (always the same)
-	 * @param itemType - The number correspnding with each item
+	 * @param itemType - The number corresponding with each item
 	 * @return - The price of the item specified by the item type
 	 */
 	static int getPrice(ArrayList<Item> itemContents, int itemType)
@@ -188,7 +172,7 @@ public class Item
 		return tempItem.itemPrice;
 	}
 	
-	static void itemLoss(ArrayList<Integer> itemAmounts)
+	static String itemLoss(ArrayList<Integer> itemAmounts)
 	{
 		
 		int randItem1 = 0;
@@ -228,6 +212,7 @@ public class Item
 		 itemAmounts.set(randItem1, currentTotal1 - randItemAmount1);
 		 
 		System.out.println("You have lost " + randItemAmount1 + itemString );
+		return "You have lost " + randItemAmount1 + itemString;
 	}
 	
 }

@@ -43,6 +43,7 @@ public class OregonTrailMVP {
 	//Initialize objects and object ArrayLists
 	Location game = new Location();
 	Landmark landmark = new Landmark();
+	River river = new River();
 	WagonMember wagonLeader = new WagonMember("");
 	WagonMember character2 = new WagonMember("");
 	WagonMember character3 = new WagonMember("");
@@ -56,11 +57,13 @@ public class OregonTrailMVP {
 	ArrayList<Item> itemContents = new ArrayList<>();
 
 	// Initializing item objects and their weights
-	Item wagonWheel = new Item(10);
-	Item wagonAxle = new Item(5);
-	Item clothing = new Item(2);
-	Food food = new Food(1);
-	Item water = new Item(7);
+	Item wagonWheel = new Item(10, 20);
+	Item wagonAxle = new Item(5 , 10);
+	Item clothing = new Item(2 , 15);
+	Food food = new Food(1, 1);
+	Item water = new Item(7,25);	
+	Item oxen = new Item(0,100);
+	
 	
 	//Implement some of the JFrame components 
 	JFrame frame;
@@ -76,6 +79,11 @@ public class OregonTrailMVP {
 	JTextArea outputTextArea = new JTextArea();
 	JLabel imageLbl = new JLabel("");
 	JButton tradeBtn = new JButton("Trade");
+	JButton rejectButton = new JButton("Reject");
+	JLabel choiceLbl = new JLabel("Choice:");
+	JButton lookAtMapBtn = new JButton("Look at Map");
+	JButton talkBtn = new JButton("Talk");
+	JLabel licenseLbl = new JLabel("");
 	
 	JTextField wagonLeaderTF;
 	JTextField character2TF;
@@ -100,7 +108,9 @@ public class OregonTrailMVP {
 	int itemKind = 0;
 	int itemAmount = 0;
 	int totalWagonWeight = 0;
+	int totalMoney = 800;
 	int currentDistanceFrom = 102;
+	private JTextField choiceTF;
 	
 			
 	/**
@@ -151,7 +161,6 @@ public class OregonTrailMVP {
 					lookAroundBtn.setEnabled(true);
 					currentDistanceFrom = landmark.distanceFrom();
 					game.setDistanceToNext(currentDistanceFrom);
-					System.out.println("distance to:" + currentDistanceFrom);
 					outputTextArea.setText("You have arrived at " + landmark.getLandmarkName() 
 							+ ". What would you like to do? ");
 					if(landmark.isFort()) {
@@ -160,6 +169,14 @@ public class OregonTrailMVP {
 					else {
 						buyBtn.setEnabled(false);
 					}
+					if(landmark.isRiver()) 
+					{
+						controlBtn.setEnabled(false);
+						outputTextArea.setText(river.displayRiverStats());
+						choiceLbl.setVisible(true);
+						choiceTF.setVisible(true);
+					}
+					
 					landmark.landmarkPassed();
 				}
 				else if(landmark.getIndex() == 0)
@@ -188,7 +205,7 @@ public class OregonTrailMVP {
 					game.travel();
 					dateEditLbl.setText(game.DateString());
 					restLbl.setText("Days to Rest: ");
-					outputTextArea.setText("Currently traveling the trail");
+					outputTextArea.setText("Currently traveling to " + landmark.getLandmarkName());
 					itemAmounts.set(3, itemAmounts.get(3) - Food.rationsAmount);
 					imageLbl.setIcon(trailImage);
 					foodInWagonEditLbl.setText("" + itemAmounts.get(3));
@@ -206,6 +223,7 @@ public class OregonTrailMVP {
 							+ "enough food next time.");
 					frame.dispose();	
 				}
+				licenseLbl.setText("");
 			}
 		});
 		initialize();	
@@ -233,9 +251,11 @@ public class OregonTrailMVP {
 		itemContents.add(wagonAxle); // 1 - Wagon Axle
 		itemContents.add(clothing); // 2 - Clothing
 		itemContents.add(food); // 3 - Food
-		itemContents.add(water); // 4 - Water (Not changeable right now)
+		itemContents.add(oxen); // 4 - Oxen
+		itemContents.add(water); // 5 - Water (Not changeable right now)
 		
 		// Initializes the amount of each item as 0 until user buys
+		itemAmounts.add(0);
 		itemAmounts.add(0);
 		itemAmounts.add(0);
 		itemAmounts.add(0);
@@ -267,6 +287,7 @@ public class OregonTrailMVP {
 		dateEditLbl.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		dateEditLbl.setBounds(511, 483, 258, 14);
 		frame.getContentPane().add(dateEditLbl);
+		controlBtn.setEnabled(false);
 		
 		controlBtn.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		controlBtn.addActionListener(new ActionListener()
@@ -294,11 +315,15 @@ public class OregonTrailMVP {
 						gameState = 2;
 					}
 				}
+				else 
+				{
+					JOptionPane.showMessageDialog(null, "Don't forget to pack food.");
+				}
 				buyFrame.setVisible(false);
 			}
 		});
 		
-		controlBtn.setBounds(104, 555, 162, 39);
+		controlBtn.setBounds(48, 589, 162, 39);
 		frame.getContentPane().add(controlBtn);
 		
 		restTF = new JTextField();
@@ -327,6 +352,10 @@ public class OregonTrailMVP {
 		changeSpeedLbl.setBounds(361, 589, 111, 14);
 		frame.getContentPane().add(changeSpeedLbl);
 		
+		JLabel leftLabel = new JLabel("");
+		leftLabel.setBounds(163, 280, 48, 14);
+		buyFrame.getContentPane().add(leftLabel);
+		
 		JLabel dateLbl = new JLabel("Today's Date: ");
 		dateLbl.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		dateLbl.setBounds(362, 481, 152, 18);
@@ -341,15 +370,33 @@ public class OregonTrailMVP {
 				Item.acceptTrade(itemAmounts);
 				System.out.println(itemAmounts);
 				acceptButton.setVisible(false);
-				clock.stop(); // Clock stops until user has finished trading, can resume
-				controlBtn.setText("Resume game");
-				gameState = 1;
+				rejectButton.setVisible(false);
+				clock.start(); // Clock stops until user has finished trading, can resume
+				controlBtn.setText("Pause game");
+				gameState = 2;
 			}
 		});
 		acceptButton.setVisible(false);
-		acceptButton.setBounds(258, 608, 93, 17);
+		acceptButton.setBounds(20, 734, 93, 17);
 		frame.getContentPane().add(acceptButton);
 		
+		rejectButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		rejectButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{	
+				// rejects a trade offer when it is presented to the user
+				acceptButton.setVisible(false);
+				rejectButton.setVisible(false);
+				clock.start(); // Clock stops until user has finished trading, can resume
+				controlBtn.setText("Pause game");
+				gameState = 2;
+			}
+		});
+		acceptButton.setVisible(false);
+		rejectButton.setVisible(false);
+		rejectButton.setBounds(20, 754, 93, 17);
+		frame.getContentPane().add(rejectButton);
+		tradeBtn.setEnabled(false);
 		
 		tradeBtn.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		tradeBtn.addActionListener(new ActionListener() {
@@ -362,9 +409,10 @@ public class OregonTrailMVP {
 				controlBtn.setText("Resume game");
 				gameState = 1;
 				acceptButton.setVisible(true);
+				rejectButton.setVisible(true);
 			}
 		});
-		tradeBtn.setBounds(123, 605, 122, 23);
+		tradeBtn.setBounds(10, 704, 122, 23);
 		frame.getContentPane().add(tradeBtn);
 		
 		JLabel rationsLbl = new JLabel("Rations");
@@ -405,8 +453,8 @@ public class OregonTrailMVP {
 		buyFrame.setBounds(0, 0, 777, 472);
 		frame.getContentPane().add(buyFrame);
 		buyFrame.getContentPane().setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("<html>1 - Wagon Wheel <br> 2 - Wagon Axle <br> 3 - Clothing <br> 4 - Food </html>");
+		//prices here *********
+		JLabel lblNewLabel = new JLabel("<html>1 - Wagon Wheel($20) <br> 2 - Wagon Axle($10) <br> 3 - Clothing($15) <br> 4 - Food($1/lb)  <br>5 - Oxen($100) </html>");
 		lblNewLabel.setBounds(10, 0, 160, 131);
 		buyFrame.getContentPane().add(lblNewLabel);
 		
@@ -428,12 +476,22 @@ public class OregonTrailMVP {
 		amountField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				itemAmount = Integer.parseInt(amountField.getText());
-				Item.Buy(itemContents, itemAmounts, itemAmount, itemKind - 1, totalWagonWeight);
-				System.out.println(itemAmounts);
-				Item tempItem = itemContents.get(itemKind - 1);
-				totalWagonWeight += tempItem.getWeight() * itemAmount;
-				System.out.println(totalWagonWeight);
-				foodInWagonEditLbl.setText("" + itemAmounts.get(3));
+				int itemPricing = Item.getPrice(itemContents, itemKind - 1);
+				
+				if (itemPricing * itemAmount <= totalMoney)
+				{
+					Item.Buy(itemContents, itemAmounts, itemAmount, itemKind - 1, totalWagonWeight);
+					System.out.println(itemAmounts);
+					Item tempItem = itemContents.get(itemKind - 1);
+					totalWagonWeight += tempItem.getWeight() * itemAmount;
+
+					totalMoney -= (itemPricing * itemAmount);
+					leftLabel.setText("" + totalMoney);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Not enough money to complete this action!");
+				}
 			}
 		});
 		amountField.setBounds(84, 187, 86, 20);
@@ -448,17 +506,29 @@ public class OregonTrailMVP {
 		amountLabel.setBounds(10, 190, 74, 14);
 		buyFrame.getContentPane().add(amountLabel);
 		
-		JButton nextBuybtn = new JButton("Next");
+		JButton nextBuybtn = new JButton("Next");				
 		nextBuybtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Gets rid of the Buying frame and puts up the default traveling image
 				buyFrame.setVisible(false);	
 				imageLbl.setIcon(trailImage);
 				imageLbl.setVisible(true);
+				lookAroundBtn.setEnabled(true);
+				buyBtn.setEnabled(true);
+				tradeBtn.setEnabled(true);
+				lookAtMapBtn.setEnabled(true);
+				talkBtn.setEnabled(true);
+				buyBtn.setEnabled(true);
+				controlBtn.setEnabled(true);
 			}
 		});
 		nextBuybtn.setBounds(84, 240, 89, 23);
 		buyFrame.getContentPane().add(nextBuybtn);
+		
+		JLabel amount1Label = new JLabel("Money Remaining: ");
+		amount1Label.setToolTipText("");
+		amount1Label.setBounds(10, 280, 134, 14);
+		buyFrame.getContentPane().add(amount1Label);
 		
 		JLabel foodInWagonLbl = new JLabel("Food in Wagon:");
 		foodInWagonLbl.setFont(new Font("Tahoma", Font.PLAIN, 10));
@@ -476,14 +546,13 @@ public class OregonTrailMVP {
 				if (!source.getValueIsAdjusting()) {
 					int speed = (int)source.getValue();
 					game.setSpeed(speed);
-					System.out.println("" + speed);
 				}
 			}
 		});
 		currentSpeedSlider.setBounds(361, 609, 200, 26);
 		frame.getContentPane().add(currentSpeedSlider);
 		
-		JButton talkBtn = new JButton("Talk");
+		talkBtn.setEnabled(false);
 		talkBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Shows the user a random message 
@@ -494,18 +563,23 @@ public class OregonTrailMVP {
 			}
 		});
 		talkBtn.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		talkBtn.setBounds(123, 639, 122, 23);
+		talkBtn.setBounds(138, 639, 122, 23);
 		frame.getContentPane().add(talkBtn);
+	
+		licenseLbl.setBounds(0, 813, 769, 26);
+		frame.getContentPane().add(licenseLbl);
 		
 		lookAroundBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//gets the image icon of the current location and displays it
+				//and the licensing
 				imageLbl.setIcon(landmark.getLandmarkIcon());
+				licenseLbl.setText(landmark.getLicense());
 			}
 		});
-		lookAroundBtn.setEnabled(true);
+		lookAroundBtn.setEnabled(false);
 		lookAroundBtn.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		lookAroundBtn.setBounds(123, 704, 122, 23);
+		lookAroundBtn.setBounds(138, 704, 122, 23);
 		frame.getContentPane().add(lookAroundBtn);
 		
 		buyBtn.addActionListener(new ActionListener() {
@@ -517,22 +591,21 @@ public class OregonTrailMVP {
 				buyFrame.setVisible(true);
 			}
 		});
-		buyBtn.setEnabled(true);
+		buyBtn.setEnabled(false);
 		buyBtn.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		buyBtn.setBounds(123, 673, 122, 23);
+		buyBtn.setBounds(138, 673, 122, 23);
 		frame.getContentPane().add(buyBtn);	
 		
 		outputTextArea.setLineWrap(true);
 		outputTextArea.setEditable(false);
-		outputTextArea.setBounds(76, 476, 217, 71);
+		outputTextArea.setBounds(10, 476, 330, 103);
 		frame.getContentPane().add(outputTextArea);
 		
 		imageLbl.setBounds(0, 0, 777, 472);
 		imageLbl.setIcon(trailImage);
 		frame.getContentPane().add(imageLbl);	
 		
-		JButton lookAtMapLbl = new JButton("Look at Map");
-		lookAtMapLbl.addActionListener(new ActionListener() 
+		lookAtMapBtn.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -543,10 +616,10 @@ public class OregonTrailMVP {
 				clock.stop();
 			}
 		});
-		lookAtMapLbl.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		lookAtMapLbl.setEnabled(true);
-		lookAtMapLbl.setBounds(123, 734, 122, 23);
-		frame.getContentPane().add(lookAtMapLbl);
+		lookAtMapBtn.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		lookAtMapBtn.setEnabled(false);
+		lookAtMapBtn.setBounds(10, 639, 122, 23);
+		frame.getContentPane().add(lookAtMapBtn);
 		
 		JButton lookAtSupplies = new JButton("Look At Supplies");
 		lookAtSupplies.addActionListener(new ActionListener() {
@@ -557,12 +630,13 @@ public class OregonTrailMVP {
 				controlBtn.setText("Resume game");
 				JOptionPane.showMessageDialog(null, "Wagon Wheels: " + itemAmounts.get(0) 
 				+ " | Wagon Axles: " + itemAmounts.get(1) + " | Clothes: " + itemAmounts.get(2)
-				+ "  | Food: " + itemAmounts.get(3) + " | Water: " + itemAmounts.get(4));
+				+ "  | Food: " + itemAmounts.get(3) +  " | Oxen: " + itemAmounts.get(4) + 
+				" | Water: " + itemAmounts.get(5));
 			}
 		});
 		lookAtSupplies.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lookAtSupplies.setEnabled(true);
-		lookAtSupplies.setBounds(255, 639, 122, 23);
+		lookAtSupplies.setBounds(10, 673, 122, 23);
 		frame.getContentPane().add(lookAtSupplies);
 		
 		JInternalFrame namingFrame = new JInternalFrame("Name Your Character");
@@ -669,6 +743,90 @@ public class OregonTrailMVP {
 		});
 		nextBtn.setBounds(146, 231, 122, 23);
 		namingFrame.getContentPane().add(nextBtn);
+		
+		choiceTF = new JTextField();
+		choiceTF.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				//gets the user's inputs
+				String selStr = choiceTF.getText();
+				int selection = Integer.parseInt(selStr);
+				// checks to make sure there is currently 3 clothes currently in the wagon if
+				// the user selected the option that requires this.
+				if(selection == 3 && itemAmounts.get(2) < 3 && river.getRiverName().contains("Snake"))	
+				{
+					JOptionPane.showMessageDialog(null, "Not enough clothes in wagon."
+							+ " Please pick a different option");
+					return;
+				}
+				
+				// otherwise processes the user's input and displays the output
+				String message = river.crossRiver(selection, totalWagonWeight);
+				outputTextArea.setText(message);
+				
+				// ends the game if crossing the river failed
+				if(message.contains("Game Over.")) 
+				{
+					JOptionPane.showMessageDialog(null, message);
+					frame.dispose();	
+				}
+				// will cause some items in wagon to be lost, based randomly
+				else if (message.contains("lost some"))
+				{
+					outputTextArea.setText("Your wagon got swept away. " + Item.itemLoss(itemAmounts));
+				}
+				// removes $5.00 from the user if that option was selected
+				else if(message.contains("$5.00"))
+				{
+					totalMoney -= 5;
+				}
+				// removes 3 clothing from the user if that option was selected
+				else if(message.contains("hired"))
+				{
+					itemAmounts.set(2, itemAmounts.get(2) - 3);
+				}
+				//skips a couple of days, changes food amounts and the day
+				else if (message.contains("waited")) 
+				{
+					game.nextDay();
+					game.nextDay();
+					itemAmounts.set(3, itemAmounts.get(3) - Food.rationsAmount);
+					itemAmounts.set(3, itemAmounts.get(3) - Food.rationsAmount);
+					foodInWagonEditLbl.setText("" + itemAmounts.get(3));	
+				}
+				
+				// nothing happens if the crossing the river was successful
+				else if (message.contains("safely")) {	}
+				
+				// skips one day for getting stuck in the mud
+				else if (message.contains("mud")) 
+				{
+					game.nextDay();
+					itemAmounts.set(3, itemAmounts.get(3) - Food.rationsAmount);
+					foodInWagonEditLbl.setText("" + itemAmounts.get(3));
+				}
+				
+				// passes the river and sets all components used with river crossing invisible
+				river.riverPassed();
+				choiceLbl.setVisible(false);
+				choiceTF.setText("");
+				choiceTF.setVisible(false);
+				
+				// allows the user to resume the game
+				controlBtn.setEnabled(true);
+			}
+		});
+		choiceTF.setBounds(284, 601, 22, 20);
+		frame.getContentPane().add(choiceTF);
+		choiceTF.setVisible(false);
+		choiceTF.setColumns(10);
+		choiceLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		choiceLbl.setBounds(229, 602, 66, 14);
+		choiceLbl.setVisible(false);
+		frame.getContentPane().add(choiceLbl);
+		
 		imageLbl.setVisible(false);
 		namingFrame.setVisible(true);
 		buyFrame.setVisible(false);
