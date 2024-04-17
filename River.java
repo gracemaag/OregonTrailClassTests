@@ -62,7 +62,7 @@ public class River extends Landmark
 	 * Some information used can be found at https://www.philipbouchard.com/oregon-trail/crossing-rivers.html
 	 * @param choice - the user's input on what method they would like to take while crossing the river
 	 * @param wagonWeight - the current total weight of the wagon
-	 * @return a string to display want event occured when crossing the river
+	 * @return a string to display of what event occured when crossing the river
 	 */
 	public String crossRiver(int choice, int wagonWeight) 
 	{
