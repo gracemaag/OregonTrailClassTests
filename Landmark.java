@@ -25,12 +25,15 @@ public class Landmark extends Location
 			"Independence Rock", "South Pass", "Green River Crossing", "Soda Springs",
 			"Fort Hall", "Snake River Crossing", "Fort Boise", "Blue Mountains",
 			"Fort Walla Walla", "The Dalles", "Willamette Valley"}; 
+	
 	// green river crossway/dalles crossway/columbia river implementation later? 
+	
 	private static final int[] distanceToLandmarks = {0, 102, 
 							  82, 118, 250, 86,
 							  190, 120, 57, 143,
-							  57, 182, 113, 160
+							  57, 182, 113, 160,
 							  55, 120, 100}; // distance to landmark
+	
 	
 	private int dialogueCounter = 0; // Counter to cycle through dialogues
 	private final String[] dialogues = 
@@ -40,15 +43,37 @@ public class Landmark extends Location
 		    "Trading is often far cheaper than buying at forts, but you never know what you'll get."
 		};
 	
+	private final String license[] = {"","","","","Chimney Rock 1 by Dr. Estell is licensed under CC BY-NC 4.0",
+			"", "", "", "","Soda Springs is licenced under CC BY-NC-SA 2.0 DEED","","", "","Blue Mountains is"
+					+ " licensed under CC BY 2.0 DEED", "", "", "Willamette Valley is licensed under CC BY 2.0 DEED"};
+	
 	ImageIcon independance = new ImageIcon("C:\\Users\\gemaa\\Downloads\\Independance.jpg");
 	ImageIcon kansasRiver = new ImageIcon("C:\\Users\\gemaa\\Downloads\\KansasRiverCrossing.jpg");
 	ImageIcon blueRiver = new ImageIcon("C:\\Users\\gemaa\\Downloads\\BigBlueRiver.jpg");
 	ImageIcon fortKearney = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\fortKearny.jpg");
+	ImageIcon chimneyRock = new ImageIcon("C:\\Users\\gemaa\\Downloads\\chimneyRock.jpg");
+	ImageIcon fortLaramie = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\fortLaramie.jpg");
+	ImageIcon independanceRock = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\independanceRock.jpg");
+	ImageIcon southPass = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\southPass.jpg");
+	ImageIcon greenRiverCrossing = new ImageIcon("C:\\Users\\gemaa\\Downloads\\greenRiverCrossing.jpg");
+	ImageIcon sodaSprings = new ImageIcon("C:\\Users\\gemaa\\Downloads\\sodaSprings.jpg");
+	ImageIcon fortHall = new ImageIcon("C:\\Users\\gemaa\\Downloads\\fortHall.jpg");
+	ImageIcon snakeRiverCrossing = new ImageIcon("C:\\Users\\gemaa\\Downloads\\snakeRiverCrossing.jpg");
+	ImageIcon fortBoise = new ImageIcon("C:\\Users\\gemaa\\Downloads\\fortBoise.jpg");
+	ImageIcon blueMountains = new ImageIcon("C:\\Users\\gemaa\\Downloads\\blueMountains.jpg");
+	ImageIcon fortWallaWalla = new ImageIcon("C:\\Users\\gemaa\\Downloads\\fortWallaWalla.jpg");
+	ImageIcon theDalles = new ImageIcon("C:\\Users\\gemaa\\Downloads\\theDalles.jpg");
+	ImageIcon willametteValley = new ImageIcon("C:\\Users\\gemaa\\Downloads\\willametteValley.jpg");
+	
+	
 	
 	
 	private final ImageIcon[] landmarkImages = 
 		{
-			independance, kansasRiver, blueRiver, fortKearney
+			independance, kansasRiver, blueRiver, fortKearney,
+			chimneyRock, fortLaramie, independanceRock, southPass, greenRiverCrossing, 
+			sodaSprings, fortHall, snakeRiverCrossing, fortBoise, blueMountains,
+			fortWallaWalla, theDalles, willametteValley
 		};
 	
 	/**
@@ -59,12 +84,14 @@ public class Landmark extends Location
 	public Landmark()
 	{
 		// Storing namedLandmarks into landmarkNames ArrayList
-	    for (String landmark : namedLandmarks) {
+	    for (String landmark : namedLandmarks)
+	    {
 	        landmarkNames.add(landmark);
 	    }
 
 	    // Storing distanceToLandmarks into landmarkDistance ArrayList
-	    for (int distance : distanceToLandmarks) {
+	    for (int distance : distanceToLandmarks) 
+	    {
 	        landmarkDistance.add(String.valueOf(distance)); // Convert int to String
 	    }
 	}
@@ -87,7 +114,8 @@ public class Landmark extends Location
 	 */
 	public String getLandmarkName()
 	{
-		if(currentIndex < 17) {
+		if(currentIndex < 17)
+		{
 		return landmarkNames.get(currentIndex);
 		}
         return "Error - Location cannot be found."; // if landmark name not found
@@ -105,6 +133,12 @@ public class Landmark extends Location
         
         return landmark.contains("Fort"); // Simple check if landmark name contains "Fort"
 	}
+	
+	public boolean isRiver() 
+	{
+		String landmark = landmarkNames.get(currentIndex);
+		return landmark.contains("River");
+	} 
 	
 	/**
 	 * 
@@ -159,7 +193,8 @@ public class Landmark extends Location
 	/**
 	 * increments the landmark to the next landmark 
 	 */
-	public void landmarkPassed() {
+	public void landmarkPassed()
+	{
 		currentIndex++;
 	}
 	
@@ -167,10 +202,25 @@ public class Landmark extends Location
 	 * gets the proper image icon of the landmark
 	 * @return the image icon of the current landmark
 	 */
-	public ImageIcon getLandmarkIcon() {
-		if(currentIndex > 0) {
+	public ImageIcon getLandmarkIcon() 
+	{
+		if(currentIndex > 0) 
+		{
 		return landmarkImages[currentIndex-1];
 		}
 		return independance ;
+	}
+	
+	/**
+	 * gets the proper license of the landmark image
+	 * @return the string of the current landmark license
+	 */
+	public String getLicense()
+	{
+		if(currentIndex > 0)
+		{
+			return license[currentIndex-1];
+		}
+			return "";
 	}
 }
