@@ -42,11 +42,12 @@ public class Landmark extends Location
 		    "Be careful when crossing the river, especially the deeper kind.",
 		    "Trading is often far cheaper than buying at forts, but you never know what you'll get."
 		};
-	
+
 	private final String license[] = {"","","","","Chimney Rock 1 by Dr. Estell is licensed under CC BY-NC 4.0",
 			"", "", "", "","Soda Springs is licenced under CC BY-NC-SA 2.0 DEED","","", "","Blue Mountains is"
 					+ " licensed under CC BY 2.0 DEED", "", "", "Willamette Valley is licensed under CC BY 2.0 DEED"};
-	
+
+	// intializing images to add to array 
 	ImageIcon independance = new ImageIcon("C:\\Users\\gemaa\\Downloads\\Independance.jpg");
 	ImageIcon kansasRiver = new ImageIcon("C:\\Users\\gemaa\\Downloads\\KansasRiverCrossing.jpg");
 	ImageIcon blueRiver = new ImageIcon("C:\\Users\\gemaa\\Downloads\\BigBlueRiver.jpg");
@@ -67,7 +68,7 @@ public class Landmark extends Location
 	
 	
 	
-	
+	// image array to corresponding location
 	private final ImageIcon[] landmarkImages = 
 		{
 			independance, kansasRiver, blueRiver, fortKearney,
@@ -133,7 +134,13 @@ public class Landmark extends Location
         
         return landmark.contains("Fort"); // Simple check if landmark name contains "Fort"
 	}
-	
+
+	/**
+ 	*
+  	* Checks if current landmark is at a river
+   	* @return true if landmark is at a river, false otherwise 
+    	*
+ 	*/
 	public boolean isRiver() 
 	{
 		String landmark = landmarkNames.get(currentIndex);
@@ -181,6 +188,7 @@ public class Landmark extends Location
 		
 	    return dialogues[dialogueCounter];
 	}
+	
 	/**
 	 * gets the current landmark number you are at or approaching
 	 * @return index of current landmark
