@@ -1,4 +1,4 @@
-package OregonTrailMVP;
+package OregonTrailV4;
 
 /**
  *
@@ -21,21 +21,26 @@ public class River extends Landmark
 	String riverName[] = {"Kansas River Crossing", "Big Blue River Crossing", 
 			"Green River Crossing", "Snake River Crossing"};
 	int width[] = {620, 200, 1000,  800};
-	int depth[] = {4, 7, 20, 8};
+	int depth[] = {2, 5, 20, 8};
 	String flowRate[] = {"slow", "fast", "slow", "fast"};
 	int riverIndex = 0;
+	final int rainMultiplier = 4;
 	
 	/**
 	 * displayRiverStats - will display each river's stats as well as display
 	 * the options than can be taken at each river
 	 * @return message - a string that contains all stats and options for crossing
 	 */
-	public String displayRiverStats() 
+	public String displayRiverStats(double rain) 
 	{
+		double tempDepth = depth[riverIndex] +
+				rainMultiplier * rain; 
+		String.format("$%,.1f", tempDepth);
 		String message = "You have arrived at " + riverName[riverIndex]
 				+ ". This river has a " + flowRate[riverIndex] + " current and is " 
-				+ width[riverIndex]  + " feet wide and " + depth[riverIndex] 
-				+ " feet deep. You can: "+ "\n[1] Ford the river \n[2] Caulk the wagon ";	
+				+ width[riverIndex]  + " feet wide and " + tempDepth
+				+ " feet deep. You can: "+ "\n[1] Ford "
+						+ "the river \n[2] Caulk the wagon ";	
 		if(riverName[riverIndex].contains("Green River"))
 		{
 			message += "\n[3] Take a Ferry for $5.00";
@@ -62,24 +67,26 @@ public class River extends Landmark
 	 * Some information used can be found at https://www.philipbouchard.com/oregon-trail/crossing-rivers.html
 	 * @param choice - the user's input on what method they would like to take while crossing the river
 	 * @param wagonWeight - the current total weight of the wagon
-	 * @return a string to display of what event occured when crossing the river
+	 * @param rain - the recent amount of rain that will affect each river's depth
+	 * @return a string to display of what event occurred when crossing the river
 	 */
-	public String crossRiver(int choice, int wagonWeight) 
+	public String crossRiver(int choice, int wagonWeight, double rain) 
 	{
-		
+		// create a temporary depth variable to store the new river depth that is dependent on recent rain
+		double tempDepth =  depth[riverIndex] + rainMultiplier * rain;
 		// choice 1: fording the river. Player can get stuck in mud, lose items,
 		// safely cross the river, or lose the entire wagon and end the game.
 		// This is all dependent on the depth of the river
 		if(choice == 1) 
 		{
-			if(depth[riverIndex] < 2.5)
+			if(tempDepth < 2.5)
 			{
 				double random = Math.random() *100;
 				if(random < 40)	 return "You are stuck in mud. Days lost: 1."; 
 				else return "You have safely forded the river.";
 			}	
 			
-			if(depth[riverIndex] <= 5 ) 
+			if(tempDepth <= 5 ) 
 			{
 				double random = Math.random() *100;
 				System.out.println(random);
@@ -96,7 +103,7 @@ public class River extends Landmark
 		if(choice == 2)
 		{
 			if(flowRate[riverIndex].contains("fast")) return "You have lost some supplies."; 
-			if(depth[riverIndex] < 2.5)	return "You are stuck in mud. Days lost: 1.";	
+			if(tempDepth < 2.5)	return "You are stuck in mud. Days lost: 1.";	
 			if(width[riverIndex] > 1100 ) 
 			{
 				double random = Math.random() * 100;
@@ -123,8 +130,6 @@ public class River extends Landmark
 			if(width[riverIndex] > 600) 
 			{
 				double random = Math.random() * 100;
-				System.out.println(random);
-				System.out.println(wagonWeight);
 				if(wagonWeight < 1500) 
 				{
 					if(random < 10) return "You have lost some supplies.";		
@@ -146,7 +151,6 @@ public class River extends Landmark
 			if(width[riverIndex] > 150) 
 			{
 				double random = Math.random() * 100;
-				System.out.println(random);
 				if(wagonWeight < 1500) 
 				{
 					if(random < 10) return "You have lost some supplies.";		
