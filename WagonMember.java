@@ -6,7 +6,7 @@
 	@version 1.0 9 April 2024
 	@filename WagonMember.java
 */
-package mpv;
+package OregonTrailV4;
 
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class WagonMember {
 	 */
 	static void dailyDecrement()
 	{
-		int healthPercentage = (int) (memberHealth * 0.10);
+		double healthPercentage =  (memberHealth * 0.20);
 		memberHealth -= healthPercentage;
 	}
 	
@@ -77,8 +77,8 @@ public class WagonMember {
 	}
 
 	/**
-	 * Does daily incrementing of health based on enviornmental factors that have been set by
-	 * either the game or player: Rations, Weater conditions, and pace.
+	 * Does daily incrementing of health based on environmental factors that have been set by
+	 * either the game or player: Rations, Weather conditions, and pace.
 	 * @param rationsValue - Bare Bones - 1, Meager - 2, Filling - 3
 	 * @param weatherValue - Very Hot - 5 Warm - 4 Cool - 3 Cold - 1 Very Cold - 0
 	 * @param itemAmounts - Array List containing the amount of clothes (2) the player has
@@ -131,14 +131,14 @@ public class WagonMember {
 		// Checks if there are more than one living members
 		if (livingMembers > 1)
 		{
-			if (illProb < 10) // Checks if illness chance met
+			if (illProb < 7) // Checks if illness chance met
 			{
 				illMember = rand.nextInt(livingMembers - 1);
 			}
 		}
 		else 
 		{
-			if (illProb < 10)
+			if (illProb < 7)
 			{
 				illMember = 0; // If only one member, always returns the first value
 			}
@@ -163,7 +163,7 @@ public class WagonMember {
 	 * @param members - Array List of the current living member's names
 	 * @param livingMembers - The number of living members 
 	 */
-	static void isBetter(ArrayList<WagonMember> members, int livingMembers)
+	static int isBetter(ArrayList<WagonMember> members, int livingMembers)
 	{
 		for (int i = livingMembers - 1; i >= 0; i--)
 		{
@@ -173,10 +173,11 @@ public class WagonMember {
 				if (better < 10)
 				{
 					(members.get(i)).hasIllness = false; // Removes that illness
-					System.out.println("Member is better.");
+					return i;
 				}
 			}
 		}
+		return -1;
 	}
 	
 	/**
@@ -186,6 +187,24 @@ public class WagonMember {
 	static void restingState()
 	{
 		memberHealth -= 5;
+	}
+	
+	/**
+	 * Returns the health description corresponding to the current health
+	 * of the wagon.
+	 * Good - 0 to 34
+	 * Fair - 35 to 64
+	 * Poor - 65 to 104
+	 * Very Poor - 105 to 140
+	 * @return - String corresponding to the wagon health value.
+	 */
+	static String getHealthDescript()
+	{
+		if (memberHealth <35) { return "Good";}
+		else if (memberHealth <65) { return "Fair";}
+		else if (memberHealth <105) { return "Poor";}
+		else if (memberHealth <=140) { return "Very Poor";}
+		else {return " ";}
 	}
 	
 }

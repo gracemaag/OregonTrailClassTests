@@ -6,7 +6,7 @@
  * @filename Landmark.java
  * 
  */
-package OregonTrailMVP;
+package OregonTrailV4;
 
 import java.util.ArrayList;
 
@@ -247,7 +247,7 @@ public class Landmark extends Location
 	public void lookAroundOption()
 	{
 		String landmarkName = landmarkNames.get(currentIndex);
-		String currentDate = DateString(); // get current date from superclass
+		String currentDate = dateString(); // get current date from superclass
 		
 		 System.out.println("[Photo Placeholder]");
 		 System.out.println("You are at " + landmarkName + ".");

@@ -6,7 +6,7 @@
 	@filename Item.java
 */
 
-package OregonTrailMVP;
+package OregonTrailV4;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,7 +15,7 @@ public class Item
 {
 	static Random rand = new Random(); // Needed for getting random numbers
 	int itemWeight; 
-	int itemPrice;
+	double itemPrice;
 	
 	// Static Variables for use in both Trading methods as placeholder values
 	static int tradeAmount = 0;
@@ -26,8 +26,9 @@ public class Item
 	/**
 	 * Constructor for the Item class
 	 * @param weight - Weight of the item as represented in the wagon
+	 * @param price - Price of the item as represented in the wagon
 	 */
-	public Item (int weight, int price)
+	public Item (int weight, double price)
 	{
 		itemWeight = weight;
 		itemPrice = price;
@@ -129,7 +130,7 @@ public class Item
 	/**
 	 * Updates the items in the player's wagon after they accept a trade
 	 * Removes items they gave, and adds items they received
-	 * @param itemAmounts
+	 * @param itemAmounts - The amount of each item in the wagon
 	 */
 	static void acceptTrade(ArrayList<Integer> itemAmounts)
 	{
@@ -166,7 +167,7 @@ public class Item
 	 * @param itemType - The number corresponding with each item
 	 * @return - The price of the item specified by the item type
 	 */
-	static int getPrice(ArrayList<Item> itemContents, int itemType)
+	static double getPrice(ArrayList<Item> itemContents, int itemType)
 	{
 		Item tempItem = itemContents.get(itemType);
 		return tempItem.itemPrice;

@@ -1,4 +1,4 @@
-package OregonTrailMVP;
+package OregonTrailV4;
 import java.lang.Object;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -36,7 +36,7 @@ public class Location
 	 * Combines all date variables and objects into one string
 	 * @return a string as a date - Example: SATURDAY, APRIL 1, 1848
 	 */
-	public String DateString()
+	public String dateString()
 	{		
 		String date = ""+ dOW +", "+ month + " " + day + ", " + year;
 		return date;
@@ -51,6 +51,11 @@ public class Location
 	public void setSpeed(int s)
 	{
 		speed = s;
+	}
+	
+	public int getSpeed()
+	{
+		return speed;
 	}
 	
 	//Updates all date values to that of the next day
@@ -101,7 +106,6 @@ public class Location
 	public int getDistanceToNext() 
 	{
 		return distanceToNext;
-		
 	}
 	
 	/*
@@ -109,8 +113,8 @@ public class Location
 	 */
 	public void rest() 
 	{
-			nextDay();
+		nextDay();
 	}
 	
-	
+	public Month getMonth() { return month; }
 }

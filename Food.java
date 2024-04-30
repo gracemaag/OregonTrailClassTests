@@ -5,7 +5,7 @@
 	@version 1.0 9 April 2024
 	@filename Food.java
 */
-package OregonTrailMVP;
+package OregonTrailV4;
 
 import java.util.ArrayList;
 
@@ -17,10 +17,11 @@ public class Food extends Item
 	/**
 	 * Constructor for the Food Class
 	 * @param itemWeight - gets from the Item superclass
+	 * @param itemPrice - gets from the Item superclass
 	 */
-	public Food(int itemWeight) 
+	public Food(int itemWeight, double itemPrice) 
 	{
-		super(itemWeight);
+		super(itemWeight, itemPrice);
 	}
 	
 	/**
@@ -77,5 +78,4 @@ public class Food extends Item
 	{
 		return itemAmounts.get(3);
 	}
-	
 }
