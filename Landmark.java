@@ -8,18 +8,20 @@
  */
 package OregonTrailV4;
 
+import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class Landmark extends Location
 {
 	
 	// array list for landmark names and distances here
-	ArrayList<String> landmarkNames = new ArrayList<String>();
-	ArrayList<String> landmarkDistance = new ArrayList<String>();
+	private ArrayList<String> landmarkNames = new ArrayList<String>();
+	private ArrayList<String> landmarkDistance = new ArrayList<String>();
 	
-	int currentIndex = 0;
+	private int currentIndex = 0;
 	private static final String[] namedLandmarks = { "Independence","Kansas River Crossing", 
 			"Big Blue River Crossing","Fort Kearney", "Chimney Rock", "Fort Laramie",
 			"Independence Rock", "South Pass", "Green River Crossing", "Soda Springs",
@@ -59,7 +61,7 @@ public class Landmark extends Location
 					// Big Blue River - Kaitlyn Reaser
 					"A woman comes up to you: “Isn’t it just beautiful here? I love the countryside,\n"
 					+ " always wanted to live out here and raise cattle... sounds like a very \n"
-					+ "relaxing lifestyle.”/n " 
+					+ "relaxing lifestyle.” \n" 
 					+ "You laugh and agree,stating that this is also something you would love to do one day.", 
 					// Fort Kearny - Kaitlyn Reaser
 					"A man approaches you: “Could I interest you in a shortcut to Chimney Rock?\n"
@@ -112,8 +114,13 @@ public class Landmark extends Location
 					+ "the party to gather supplies and allow the oxen to enjoy the water. Solomon and\n"
 					+ "a few of the other young boys want to try out swimming, but I’m not too sure.\n"
 					+ "One of the children could drown and that would just be plain terrible. \r\n",
-					//Fort Hall
-					"fort hall", 
+					//Fort Hall - Savannah Larsen
+					"A young man waves you over: \r\n"
+					+ "“Hiya there ma’am, welcome to Fort Hall! I know things might be in a bit of a\n"
+					+ "ruckus right now, but that’s just because we’re waitin’ to see what happens.\n"
+					+ "Did ya know that we might become a US Territory? Ya picked the right time to\n"
+					+ "travel through here, we’re stocking up in plenty of furs right now for the people\n"
+					+ "going up the trail. Buy some clothes at the store if ya need em!”\r\n", 
 					// Snake River - Savannah Larsen
 					"A nearby blacksmith strikes up a conversation:\r\n"
 					+ "“I had a cousin who went up the trail a month or so earlier. We’d been exchanging\n"
@@ -126,33 +133,71 @@ public class Landmark extends Location
 					+ "“This is the right place to be if you’re looking for a classic old welcome! Feel free\n"
 					+ "to stay as long as you like, my husband and I decided to stop here along the trail a\n"
 					+ "while ago and then we never left. We definitely have better food here too, ha!”\r\n", 
-					"blue mountains", 
+					// blue mountains - Savannah Larsen
+					"A seamstress smiles over at you:\r\n"
+					+ "“Heading through the mountains then? Make sure you’ve got plenty of food, you’re\n"
+					+ "almost there! This final stretch is one of the longest, so you best trade what you can.\n"
+					+ "Take it from me, young lady, making it up these parts with a family isn’t easy. But if\n"
+					+ "you make it to Oregon, you folks could even start up a ranch. I heard that you can raise\n"
+					+ "as many cattle as you want and it won’t cost a penny. Great idea for folks looking to settle\n"
+					+ "down over there like you.”\r\n", 
 					// Fort Walla - Kaitlyn Reaser
 					"A man approaches you and your husband: “So close to Oregon City, we’re almost there.\n"
 					+ "It's been a long journey, a lot of loss along the way. My daughter is sick, we’re\n"
 					+ "hoping to get help once we reach the city.” Your husband responds for you, stating\n"
 					+ "that his younger brother has also come down with a fever. He is hoping the same thing.",
-					"the dalles", "willamette valley"
+					// the Dalles - Savannah Larsen
+					"A guide beckons you:\r\n"
+					+ "“So you’re almost there, huh? That’s great to see ma’am! Now you’ve got two choices\n"
+					+ "ahead of you. Pick the longer trail over the rest of the Dalles or brave the treacherous\n"
+					+ "Columbia River. Up to you folks though, ma’am. As a guide, I’d recommend risking the longer\n"
+					+ "hike, that slippery river just ain’t worth it.” \r\n",
+					//Willamette Valley - Savannah Larsen
+					"A merchant smiles at you:\r\n"
+					+ "“Welcome good folk to Willamette! Must have been quite the trip from out East! Welcome to\n"
+					+ "the new frontier, you’ve got a spectacular new life ahead of you. Congratulations on making\n"
+					+ "it this far my friends, why don’t we stop and chat about your future prospects. Fine folks\n"
+					+ "like you are probably looking to start a ranch, we’ve got land aplenty for the choosing, right\n"
+					+ "this way!”\r\n"
+					+ ""
 	};
 	
+	
+	
+	//Fort Bridger - i dont know where it goes
+	/*
+	 				* A shopkeeper helps you off the wagon: \r\n
+					“There you go ma’am, glad you made it out here! We may not look like much, but this here fort's\n
+					one of the most important places on the trail. We’ve only been here for a few short years, but\n
+					we’re already one of the biggest places to stock back up on everything you need to survive the\n
+					journey. You might find some wild berries out in the wilderness and you might meet a friendly\n
+					native or two that can help you out, but why leave to chance when you kind folks can just get everything now?”
+
+	 */
+	
 	// Initialize image icons
-	ImageIcon independance = new ImageIcon("C:\\Users\\gemaa\\Downloads\\Independance.jpg");
-	ImageIcon kansasRiver = new ImageIcon("C:\\Users\\gemaa\\Downloads\\KansasRiverCrossing.jpg");
-	ImageIcon blueRiver = new ImageIcon("C:\\Users\\gemaa\\Downloads\\BigBlueRiver.jpg");
-	ImageIcon fortKearney = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\fortKearny.jpg");
-	ImageIcon chimneyRock = new ImageIcon("C:\\Users\\gemaa\\Downloads\\chimneyRock.jpg");
-	ImageIcon fortLaramie = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\fortLaramie.jpg");
-	ImageIcon independanceRock = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\independanceRock.jpg");
-	ImageIcon southPass = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\southPass.jpg");
-	ImageIcon greenRiverCrossing = new ImageIcon("C:\\Users\\gemaa\\Downloads\\greenRiverCrossing.jpg");
-	ImageIcon sodaSprings = new ImageIcon("C:\\Users\\gemaa\\Downloads\\sodaSprings.jpg");
-	ImageIcon fortHall = new ImageIcon("C:\\Users\\gemaa\\Downloads\\fortHall.jpg");
-	ImageIcon snakeRiverCrossing = new ImageIcon("C:\\Users\\gemaa\\Downloads\\snakeRiverCrossing.jpg");
-	ImageIcon fortBoise = new ImageIcon("C:\\Users\\gemaa\\Downloads\\fortBoise.jpg");
-	ImageIcon blueMountains = new ImageIcon("C:\\Users\\gemaa\\Downloads\\blueMountains.jpg");
-	ImageIcon fortWallaWalla = new ImageIcon("C:\\Users\\gemaa\\Downloads\\fortWallaWalla.jpg");
-	ImageIcon theDalles = new ImageIcon("C:\\Users\\gemaa\\Downloads\\theDalles.jpg");
-	ImageIcon willametteValley = new ImageIcon("C:\\Users\\gemaa\\Downloads\\willametteValley.jpg");
+	ImageIcon independance = new ImageIcon("C:\\Users\\gemaa\\Downloads\\Independence.png");
+	ImageIcon kansasRiver = new ImageIcon("C:\\Users\\gemaa\\Downloads\\KansasRiver.png");
+	ImageIcon blueRiver = new ImageIcon("C:\\Users\\gemaa\\Downloads\\BigBlueRiver.png");
+	ImageIcon fortKearney = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\FortKearny.png");
+	ImageIcon chimneyRock = new ImageIcon("C:\\Users\\gemaa\\Downloads\\ChimneyRock.png");
+	ImageIcon fortLaramie = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\FortLaramie.png");
+	ImageIcon independanceRock = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\IndependenceRock.png");
+	ImageIcon southPass = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\SouthPass.png");
+	ImageIcon greenRiverCrossing = new ImageIcon("C:\\Users\\gemaa\\Downloads\\GreenRiver.png");
+	ImageIcon sodaSprings = new ImageIcon("C:\\Users\\gemaa\\Downloads\\SodaSprings.png");
+	ImageIcon fortHall = new ImageIcon("C:\\Users\\gemaa\\Downloads\\FortHall.png");
+	ImageIcon snakeRiverCrossing = new ImageIcon("C:\\Users\\gemaa\\Downloads\\SnakeRiver.png");
+	ImageIcon fortBoise = new ImageIcon("C:\\Users\\gemaa\\Downloads\\FortBoise.png");
+	ImageIcon blueMountains = new ImageIcon("C:\\Users\\gemaa\\Downloads\\BlueMountains.png");
+	ImageIcon fortWallaWalla = new ImageIcon("C:\\Users\\gemaa\\Downloads\\FortWallaWalla.png");
+	ImageIcon theDalles = new ImageIcon("C:\\Users\\gemaa\\Downloads\\TheDalles.png");
+	ImageIcon willametteValley = new ImageIcon("C:\\Users\\gemaa\\Downloads\\WillametteValley.png");
+	
+	ImageIcon FortBridger = new ImageIcon("");
+	ImageIcon BarlowTollRoad = new ImageIcon("C:\\Users\\gemaa\\Downloads\\BarlowTollRoad.png");
+	
+	
 	
 	// make array of the image icons to be used
 	private final ImageIcon[] landmarkImages = 
@@ -293,6 +338,7 @@ public class Landmark extends Location
 	{
 		if(currentIndex > 0) 
 		{
+			
 		return landmarkImages[currentIndex - 1];
 		}
 		return independance ;
@@ -306,9 +352,9 @@ public class Landmark extends Location
 	{
 		if(currentIndex > 0)
 		{
-			return license[currentIndex - 1];
+			return namedLandmarks[currentIndex-1] + "is liscensed by William Henry Jackson";
 		}
-			return "";
+			return "Independence is licsensed by William Henry Jackson";
 	}
 	
 	/**

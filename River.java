@@ -18,13 +18,13 @@ public class River extends Landmark
 	public River(){}
 	
 	// Initialize river names and related values for each river
-	String riverName[] = {"Kansas River Crossing", "Big Blue River Crossing", 
+	private String riverName[] = {"Kansas River Crossing", "Big Blue River Crossing", 
 			"Green River Crossing", "Snake River Crossing"};
-	int width[] = {620, 200, 1000,  800};
-	int depth[] = {2, 5, 20, 8};
-	String flowRate[] = {"slow", "fast", "slow", "fast"};
-	int riverIndex = 0;
-	final int rainMultiplier = 4;
+	private int width[] = {620, 200, 1000,  800};
+	private int depth[] = {2, 5, 20, 8};
+	private String flowRate[] = {"slow", "fast", "slow", "fast"};
+	private int riverIndex = 0;
+	private final int rainMultiplier = 4;
 	
 	/**
 	 * displayRiverStats - will display each river's stats as well as display

@@ -35,85 +35,92 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Image;
 
 
 public class OregonTrailV4 {
 	
 	//Initialize objects and object ArrayLists
-	Location game = new Location();
-	Landmark landmark = new Landmark();
-	River river = new River();
-	Weather weather = new Weather();
-	WagonMember wagonLeader = new WagonMember("", false);
-	WagonMember character2 = new WagonMember("", false);
-	WagonMember character3 = new WagonMember("", false);
-	WagonMember character4 = new WagonMember("", false);
-	WagonMember character5 = new WagonMember("", false);
-	String outputWeather = ("Sunny Skies");
-	Timer clock;
+	private Location game = new Location();
+	private Landmark landmark = new Landmark();
+	private River river = new River();
+	private Weather weather = new Weather();
+	private WagonMember wagonLeader = new WagonMember("", false);
+	private WagonMember character2 = new WagonMember("", false);
+	private WagonMember character3 = new WagonMember("", false);
+	private WagonMember character4 = new WagonMember("", false);
+	private WagonMember character5 = new WagonMember("", false);
+	private String outputWeather = ("Sunny Skies");
+	private Timer clock;
 	
 	// Array Lists for keeping track of wagon members, items, and amounts 
-	ArrayList<WagonMember> members = new ArrayList<>();
-	ArrayList<Integer> itemAmounts = new ArrayList<>();
-	ArrayList<Item> itemContents = new ArrayList<>();
+	private ArrayList<WagonMember> members = new ArrayList<>();
+	private ArrayList<Integer> itemAmounts = new ArrayList<>();
+	private ArrayList<Item> itemContents = new ArrayList<>();
 
 	// Initializing item objects, their weights, and their prices
-	Item wagonWheel = new Item(10, 10);
-	Item wagonAxle = new Item(5 , 10);
-	Item clothing = new Item(2 , 10);
-	Food food = new Food(1, .20);
-	Item water = new Item(7,25);	
-	Item oxen = new Item(0,20);
+	private Item wagonWheel = new Item(10, 10);
+	private Item wagonAxle = new Item(5 , 10);
+	private Item clothing = new Item(2 , 10);
+	private Food food = new Food(1, .20);
+	private Item water = new Item(7,25);	
+	private Item oxen = new Item(0,20);
 	
 	//Implement some of the JFrame components 
-	JFrame frame;
-	JTextField restTF;
-	JLabel dateEditLbl= new JLabel("");
-	JLabel distanceTraveledEditLbl = new JLabel("0");
-	JLabel distanceToLandmarkEditLbl = new JLabel("102");
-	JLabel restLbl = new JLabel("Days to rest:");
-	JButton controlBtn = new JButton("Travel");
-	JButton lookAroundBtn = new JButton("Look Around");
-	JInternalFrame buyFrame = new JInternalFrame("Buy Frame");
-	JButton buyBtn = new JButton("Buy");
-	JTextArea outputTextArea = new JTextArea();
-	JLabel imageLbl = new JLabel("");
-	JButton tradeBtn = new JButton("Trade");
-	JButton rejectButton = new JButton("Reject");
-	JLabel choiceLbl = new JLabel("Choice:");
-	JButton lookAtMapBtn = new JButton("Look at Map");
-	JButton talkBtn = new JButton("Talk");
-	JLabel licenseLbl = new JLabel("");
-	JLabel tempLbl = new JLabel("Cool");
-	JLabel weatherLbl = new JLabel("Sunny Skies");
-	JTextField choiceTF;
-	JTextField character2TF;
-	JTextField character3TF;
-	JTextField character4TF;
-	JTextField character5TF;
+	private JFrame frame;
+	private JTextField restTF;
+	private JLabel dateEditLbl= new JLabel("");
+	private JLabel distanceTraveledEditLbl = new JLabel("0");
+	private JLabel distanceToLandmarkEditLbl = new JLabel("102");
+	private JLabel restLbl = new JLabel("Days to rest:");
+	private JButton controlBtn = new JButton("Travel");
+	private JButton lookAroundBtn = new JButton("Look Around");
+	private JInternalFrame buyFrame = new JInternalFrame("Buy Frame");
+	private JButton buyBtn = new JButton("Buy");
+	private JTextArea outputTextArea = new JTextArea();
+	private JLabel imageLbl = new JLabel("");
+	private JButton tradeBtn = new JButton("Trade");
+	private JButton rejectButton = new JButton("Reject");
+	private JLabel choiceLbl = new JLabel("Choice:");
+	private JButton lookAtMapBtn = new JButton("Look at Map");
+	private JButton talkBtn = new JButton("Talk");
+	private JLabel licenseLbl = new JLabel("");
+	private JLabel tempLbl = new JLabel("Cool");
+	private JLabel weatherLbl = new JLabel("Sunny Skies");
+	private JTextField choiceTF;
+	private JTextField character2TF;
+	private JTextField character3TF;
+	private JTextField character4TF;
+	private JTextField character5TF;
 	
-	ButtonGroup rationsGroup = new ButtonGroup();
-	JRadioButton bareBonesBtn = new JRadioButton("Bare Bones");
-	JRadioButton meagerBtn = new JRadioButton("Meager");
-	JRadioButton fillingBtn = new JRadioButton("Filling");
-	JLabel foodInWagonEditLbl = new JLabel("");
-	JLabel healthChangeLabel = new JLabel("");
+	private ButtonGroup rationsGroup = new ButtonGroup();
+	private JRadioButton bareBonesBtn = new JRadioButton("Bare Bones");
+	private JRadioButton meagerBtn = new JRadioButton("Meager");
+	private JRadioButton fillingBtn = new JRadioButton("Filling");
+	private JLabel foodInWagonEditLbl = new JLabel("");
+	private JLabel healthChangeLabel = new JLabel("");
 	
-	JTextField kindField;
-	JTextField amountField;
+	private JTextField kindField;
+	private JTextField amountField;
 	
-	ImageIcon trailImage = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\trailImage.jpg");
-	ImageIcon mapImage = new ImageIcon("C:\\Users\\gemaa\\Downloads\\images.jpeg");
+	private ImageIcon trailImage = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\trailImage.jpg");
+	private ImageIcon mapImage = new ImageIcon("C:\\Users\\gemaa\\Downloads\\images.jpeg");
+	Image img = trailImage.getImage();
+	Image newImg = img.getScaledInstance( 794, 472, Image.SCALE_SMOOTH);
 	
-	int gameState = 1; // 1 for pause game, 2 for resume game.
-	int restCount = 0; // Amount of days left to rest
-	int itemKind = 0; 
-	int itemAmount = 0;
-	int totalWagonWeight = 0;
-	int totalMoney = 800;
-	int currentDistanceFrom = 102;
-	int livingMems = 4;
-	int rationsValue = 3;
+	private final boolean PAUSED = true;
+	private final boolean RESUMED = false;
+	private boolean gameState = PAUSED; 
+	private int restCount = 0; // Amount of days left to rest
+	private int itemKind = 0; 
+	private int itemAmount = 0;
+	private int totalWagonWeight = 0;
+	private int totalMoney = 800;
+	private int currentDistanceFrom = 102;
+	private int livingMems = 4;
+	private int rationsValue = 3;
+	
 			
 	/**
 	 * Launch the application.
@@ -166,7 +173,7 @@ public class OregonTrailV4 {
 					 */
 					clock.stop();
 					controlBtn.setText("Resume game");
-					gameState = 1;
+					gameState = PAUSED;
 					talkBtn.setEnabled(true);
 					lookAroundBtn.setEnabled(true);
 					currentDistanceFrom = landmark.distanceFrom();
@@ -220,7 +227,7 @@ public class OregonTrailV4 {
 						outputTextArea.setText("Currently resting for "+ restCount + " more days");
 					}
 					itemAmounts.set(3, itemAmounts.get(3) - Food.rationsAmount);
-					imageLbl.setIcon(trailImage);
+					imageLbl.setIcon(new ImageIcon(newImg));
 					foodInWagonEditLbl.setText("" + itemAmounts.get(3));
 					distanceTraveledEditLbl.setText("" + game.getTotalTraveled());
 					distanceToLandmarkEditLbl.setText("" + game.getDistanceToNext());
@@ -241,7 +248,7 @@ public class OregonTrailV4 {
 					restLbl.setText("Days to Rest: ");
 					outputTextArea.setText("Currently traveling to " + landmark.getLandmarkName());
 					itemAmounts.set(3, itemAmounts.get(3) - Food.rationsAmount);
-					imageLbl.setIcon(trailImage);
+					imageLbl.setIcon(new ImageIcon(newImg));
 					foodInWagonEditLbl.setText("" + itemAmounts.get(3));
 					distanceTraveledEditLbl.setText("" + game.getTotalTraveled());
 					distanceToLandmarkEditLbl.setText("" + game.getDistanceToNext());
@@ -357,34 +364,37 @@ public class OregonTrailV4 {
 		itemAmounts.add(20);
 		
 		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(255, 255, 255));
-		frame.setBounds(100, 100, 793, 899);
+		frame.getContentPane().setBackground(new Color(0, 170, 85));
+		frame.setBounds(100, 100, 793, 815);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel distanceTraveledLbl = new JLabel("Total Distance Traveled: ");
-		distanceTraveledLbl.setFont(new Font("Perpetua", Font.BOLD, 10));
-		distanceTraveledLbl.setBounds(361, 532, 165, 24);
+		distanceTraveledLbl.setBackground(new Color(0, 0, 0));
+		distanceTraveledLbl.setFont(new Font("Perpetua", Font.BOLD, 16));
+		distanceTraveledLbl.setBounds(361, 554, 196, 24);
 		frame.getContentPane().add(distanceTraveledLbl);
-		distanceTraveledEditLbl.setForeground(new Color(0, 128, 0));
-		distanceTraveledEditLbl.setFont(new Font("Perpetua", Font.BOLD, 11));
+		distanceTraveledEditLbl.setForeground(new Color(0, 0, 0));
+		distanceTraveledEditLbl.setFont(new Font("Perpetua", Font.BOLD, 14));
 	
-		distanceTraveledEditLbl.setBounds(511, 539, 46, 14);
+		distanceTraveledEditLbl.setBounds(557, 560, 46, 14);
 		frame.getContentPane().add(distanceTraveledEditLbl);
 		
 		JLabel distanceToLandmarkLbl = new JLabel("Distance to Next Landmark:");
-		distanceToLandmarkLbl.setFont(new Font("Perpetua", Font.BOLD, 10));
-		distanceToLandmarkLbl.setBounds(361, 555, 152, 24);
+		distanceToLandmarkLbl.setBackground(new Color(0, 0, 0));
+		distanceToLandmarkLbl.setFont(new Font("Perpetua", Font.BOLD, 14));
+		distanceToLandmarkLbl.setBounds(361, 589, 196, 24);
 		frame.getContentPane().add(distanceToLandmarkLbl);
-		distanceToLandmarkEditLbl.setFont(new Font("Perpetua", Font.BOLD, 11));
-		distanceToLandmarkEditLbl.setForeground(new Color(0, 128, 0));
+		distanceToLandmarkEditLbl.setFont(new Font("Perpetua", Font.BOLD, 14));
+		distanceToLandmarkEditLbl.setForeground(new Color(0, 0, 0));
 
-		distanceToLandmarkEditLbl.setBounds(511, 562, 46, 14);
+		distanceToLandmarkEditLbl.setBounds(549, 595, 46, 14);
 		frame.getContentPane().add(distanceToLandmarkEditLbl);
 		
 		dateEditLbl = new JLabel(game.dateString());
+		dateEditLbl.setBackground(new Color(0, 0, 0));
 		dateEditLbl.setFont(new Font("Perpetua", Font.BOLD, 16));
-		dateEditLbl.setBounds(511, 483, 258, 14);
+		dateEditLbl.setBounds(497, 527, 258, 14);
 		frame.getContentPane().add(dateEditLbl);
 		controlBtn.setForeground(new Color(255, 255, 255));
 		controlBtn.setBackground(new Color(0, 0, 0));
@@ -397,24 +407,24 @@ public class OregonTrailV4 {
 			public void actionPerformed(ActionEvent e)
 			{
 				// Makes default image visible
-				imageLbl.setIcon(trailImage);
+				imageLbl.setIcon(new ImageIcon(newImg));
 				imageLbl.setVisible(true);
 				
 				//pauses the game
 				if (Food.rationsAmount != 0)
 				{
-					if(gameState == 2)
+					if(gameState == RESUMED)
 					{
 						clock.stop();
 						controlBtn.setText("Resume game");
-						gameState = 1;
+						gameState = PAUSED;
 					}
 					//resumes the game
-					else if(gameState == 1)
+					else if(gameState == PAUSED)
 					{
 						clock.start();
 						controlBtn.setText("Pause Game");
-						gameState = 2;
+						gameState = RESUMED;
 					}
 				}
 				else 
@@ -444,24 +454,25 @@ public class OregonTrailV4 {
 			}
 		});
 		
-		restTF.setBounds(662, 510, 22, 20);
+		restTF.setBounds(466, 723, 22, 20);
 		frame.getContentPane().add(restTF);
 		restTF.setColumns(10);
-		restLbl.setFont(new Font("Perpetua", Font.BOLD, 10));
+		restLbl.setFont(new Font("Perpetua", Font.BOLD, 14));
 		
-		restLbl.setBounds(579, 512, 95, 14);
+		restLbl.setBounds(361, 721, 95, 21);
 		frame.getContentPane().add(restLbl);
 		
 		JLabel changeSpeedLbl = new JLabel("Current Speed:");
-		changeSpeedLbl.setFont(new Font("Perpetua", Font.BOLD, 10));
-		changeSpeedLbl.setBounds(626, 589, 111, 14);
+		changeSpeedLbl.setForeground(new Color(0, 0, 0));
+		changeSpeedLbl.setFont(new Font("Perpetua", Font.BOLD, 14));
+		changeSpeedLbl.setBounds(608, 629, 111, 14);
 		frame.getContentPane().add(changeSpeedLbl);
 		
 		JLabel dateLbl = new JLabel("Today's Date: ");
 		dateLbl.setForeground(new Color(0, 0, 0));
 		dateLbl.setBackground(new Color(0, 0, 0));
 		dateLbl.setFont(new Font("Perpetua", Font.BOLD, 16));
-		dateLbl.setBounds(362, 481, 152, 18);
+		dateLbl.setBounds(361, 525, 152, 18);
 		frame.getContentPane().add(dateLbl);	
 		
 		JButton acceptButton = new JButton("Accept");
@@ -479,7 +490,7 @@ public class OregonTrailV4 {
 				rejectButton.setVisible(false);
 				clock.start(); // Clock stops until user has finished trading, can resume
 				controlBtn.setText("Pause game");
-				gameState = 2;
+				gameState = RESUMED;
 			}
 		});
 		acceptButton.setVisible(false);
@@ -498,7 +509,7 @@ public class OregonTrailV4 {
 				rejectButton.setVisible(false);
 				clock.start(); // Clock stops until user has finished trading, can resume
 				controlBtn.setText("Pause game");
-				gameState = 2;
+				gameState = RESUMED;
 			}
 		});
 		acceptButton.setVisible(false);
@@ -519,7 +530,7 @@ public class OregonTrailV4 {
 				outputTextArea.setText (tradePrompt);
 				clock.stop(); // Clock stops until user has decided to accept the trade
 				controlBtn.setText("Resume game");
-				gameState = 1;
+				gameState = PAUSED;
 				acceptButton.setVisible(true);
 				rejectButton.setVisible(true);
 			}
@@ -527,13 +538,14 @@ public class OregonTrailV4 {
 		tradeBtn.setBounds(10, 704, 122, 23);
 		frame.getContentPane().add(tradeBtn);
 		
-		JLabel rationsLbl = new JLabel("Rations");
-		rationsLbl.setFont(new Font("Perpetua", Font.BOLD, 10));
-		rationsLbl.setBounds(631, 539, 73, 14);
+		JLabel rationsLbl = new JLabel("Rations:");
+		rationsLbl.setBackground(new Color(0, 0, 0));
+		rationsLbl.setFont(new Font("Perpetua", Font.BOLD, 14));
+		rationsLbl.setBounds(361, 686, 73, 24);
 		frame.getContentPane().add(rationsLbl);
-		bareBonesBtn.setForeground(new Color(0, 128, 0));
-		bareBonesBtn.setBackground(new Color(255, 255, 255));
-		bareBonesBtn.setFont(new Font("Perpetua", Font.BOLD, 10));
+		bareBonesBtn.setForeground(new Color(0, 0, 0));
+		bareBonesBtn.setBackground(new Color(0, 170, 85));
+		bareBonesBtn.setFont(new Font("Perpetua", Font.BOLD, 14));
 		bareBonesBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Sets the food rations to 'Bare Bones'
@@ -541,12 +553,12 @@ public class OregonTrailV4 {
 				food.changeRations(5, rationsValue);
 			}
 		});
-		bareBonesBtn.setBounds(544, 556, 85, 23);
+		bareBonesBtn.setBounds(436, 687, 101, 23);
 		frame.getContentPane().add(bareBonesBtn);
-		meagerBtn.setForeground(new Color(0, 128, 0));
-		meagerBtn.setBackground(new Color(255, 255, 255));
+		meagerBtn.setForeground(new Color(0, 0, 0));
+		meagerBtn.setBackground(new Color(0, 170, 85));
 		
-		meagerBtn.setFont(new Font("Perpetua", Font.BOLD, 10));
+		meagerBtn.setFont(new Font("Perpetua", Font.BOLD, 14));
 		meagerBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Sets the food rations to 'Meager'
@@ -554,12 +566,12 @@ public class OregonTrailV4 {
 				food.changeRations(5, rationsValue);
 			}
 		});
-		meagerBtn.setBounds(631, 556, 73, 23);
+		meagerBtn.setBounds(538, 687, 85, 23);
 		frame.getContentPane().add(meagerBtn);
-		fillingBtn.setForeground(new Color(0, 128, 0));
-		fillingBtn.setBackground(new Color(255, 255, 255));
+		fillingBtn.setForeground(new Color(0, 0, 0));
+		fillingBtn.setBackground(new Color(0, 170, 85));
 		
-		fillingBtn.setFont(new Font("Perpetua", Font.BOLD, 10));
+		fillingBtn.setFont(new Font("Perpetua", Font.BOLD, 14));
 		fillingBtn.setSelected(true);
 		fillingBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -568,7 +580,7 @@ public class OregonTrailV4 {
 				food.changeRations(5, rationsValue);
 			}
 		});
-		fillingBtn.setBounds(708, 558, 109, 23);
+		fillingBtn.setBounds(646, 687, 109, 23);
 		frame.getContentPane().add(fillingBtn);
 		
 		/**
@@ -577,19 +589,20 @@ public class OregonTrailV4 {
 		 */
 		
 		JLabel foodInWagonLbl = new JLabel("Food in Wagon:");
-		foodInWagonLbl.setFont(new Font("Perpetua", Font.BOLD, 10));
-		foodInWagonLbl.setBounds(361, 589, 95, 14);
+		foodInWagonLbl.setBackground(new Color(0, 0, 0));
+		foodInWagonLbl.setFont(new Font("Perpetua", Font.BOLD, 14));
+		foodInWagonLbl.setBounds(361, 620, 111, 33);
 		frame.getContentPane().add(foodInWagonLbl);
-		foodInWagonEditLbl.setForeground(new Color(0, 128, 0));
-		foodInWagonEditLbl.setFont(new Font("Perpetua", Font.BOLD, 11));
+		foodInWagonEditLbl.setForeground(new Color(0, 0, 0));
+		foodInWagonEditLbl.setFont(new Font("Perpetua", Font.BOLD, 14));
 		
-		foodInWagonEditLbl.setBounds(502, 590, 40, 14);
+		foodInWagonEditLbl.setBounds(497, 620, 40, 33);
 		frame.getContentPane().add(foodInWagonEditLbl);
 		
 		// User drags the slider to their desired speed, speed updated accordingly
 		JSlider currentSpeedSlider = new JSlider(JSlider.HORIZONTAL,12,20,12);
 		currentSpeedSlider.setForeground(new Color(0, 128, 0));
-		currentSpeedSlider.setBackground(new Color(255, 255, 255));
+		currentSpeedSlider.setBackground(new Color(0, 170, 85));
 		currentSpeedSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				JSlider source = (JSlider)e.getSource();
@@ -599,7 +612,7 @@ public class OregonTrailV4 {
 				}
 			}
 		});
-		currentSpeedSlider.setBounds(555, 615, 200, 26);
+		currentSpeedSlider.setBounds(555, 654, 200, 26);
 		frame.getContentPane().add(currentSpeedSlider);
 		talkBtn.setForeground(new Color(255, 255, 255));
 		talkBtn.setBackground(new Color(0, 0, 0));
@@ -610,7 +623,7 @@ public class OregonTrailV4 {
 				// Shows the user a message relating to the current dialog
 				clock.stop();
 				controlBtn.setText("Resume game");
-				gameState = 1;
+				gameState = PAUSED;
 				JOptionPane.showMessageDialog(null, landmark.getLandmarkDialog());									
 			}
 		});
@@ -618,7 +631,7 @@ public class OregonTrailV4 {
 		talkBtn.setBounds(138, 639, 122, 23);
 		frame.getContentPane().add(talkBtn);
 	
-		licenseLbl.setBounds(0, 813, 769, 26);
+		licenseLbl.setBounds(160, 745, 607, 26);
 		frame.getContentPane().add(licenseLbl);
 		lookAroundBtn.setForeground(new Color(255, 255, 255));
 		lookAroundBtn.setBackground(new Color(0, 0, 0));
@@ -627,7 +640,11 @@ public class OregonTrailV4 {
 			public void actionPerformed(ActionEvent e) {
 				//gets the image icon of the current location and displays it
 				//and the licensing
-				imageLbl.setIcon(landmark.getLandmarkIcon());
+				
+				
+				Image img = landmark.getLandmarkIcon().getImage();
+				Image newImg = img.getScaledInstance( 794, 472, Image.SCALE_SMOOTH);
+				imageLbl.setIcon(new ImageIcon(newImg));
 				licenseLbl.setText(landmark.getLicense());
 			}
 		});
@@ -643,7 +660,7 @@ public class OregonTrailV4 {
 				//pauses the game and lets the user buy, only works at forts
 				clock.stop();
 				controlBtn.setText("Resume game");
-				gameState = 1;
+				gameState = PAUSED;
 				buyFrame.setVisible(true);
 			}
 		});
@@ -666,7 +683,7 @@ public class OregonTrailV4 {
 				// Gives an image of a map of the Oregon Trail when clicked
 				imageLbl.setIcon(mapImage);
 				controlBtn.setText("Resume game");
-				gameState = 1;
+				gameState = PAUSED;
 				clock.stop();
 			}
 		});
@@ -682,7 +699,7 @@ public class OregonTrailV4 {
 			public void actionPerformed(ActionEvent e) {
 				// Stops the clock and shows the user how much of each item they have at the moment
 				clock.stop();
-				gameState = 1;
+				gameState = PAUSED;
 				controlBtn.setText("Resume game");
 				JOptionPane.showMessageDialog(null, "Wagon Wheels: " + itemAmounts.get(0) 
 				+ " | Wagon Axles: " + itemAmounts.get(1) + " | Clothes: " + itemAmounts.get(2)
@@ -781,24 +798,25 @@ public class OregonTrailV4 {
 		choiceLbl.setVisible(false);
 		frame.getContentPane().add(choiceLbl);
 		
-		weatherLbl.setFont(new Font("Perpetua", Font.BOLD, 10));
-		weatherLbl.setBounds(361, 512, 95, 14);
+		weatherLbl.setFont(new Font("Perpetua", Font.BOLD, 14));
+		weatherLbl.setBounds(624, 560, 95, 14);
 		frame.getContentPane().add(weatherLbl);
-		tempLbl.setForeground(new Color(0, 128, 0));
+		tempLbl.setForeground(new Color(0, 0, 0));
 		
-		tempLbl.setFont(new Font("Perpetua", Font.BOLD, 10));
-		tempLbl.setBounds(512, 514, 30, 14);
+		tempLbl.setFont(new Font("Perpetua", Font.BOLD, 14));
+		tempLbl.setBounds(624, 594, 50, 14);
 		frame.getContentPane().add(tempLbl);
 		
 		JLabel healthLabel = new JLabel("Health:");
-		healthLabel.setFont(new Font("Perpetua", Font.BOLD, 10));
-		healthLabel.setBounds(361, 601, 73, 50);
+		healthLabel.setBackground(new Color(0, 0, 0));
+		healthLabel.setFont(new Font("Perpetua", Font.BOLD, 14));
+		healthLabel.setBounds(361, 646, 95, 50);
 		frame.getContentPane().add(healthLabel);
-		healthChangeLabel.setForeground(new Color(0, 128, 0));
-		healthChangeLabel.setFont(new Font("Perpetua", Font.BOLD, 11));
+		healthChangeLabel.setForeground(new Color(0, 0, 0));
+		healthChangeLabel.setFont(new Font("Perpetua", Font.BOLD, 14));
 		
 		
-		healthChangeLabel.setBounds(433, 601, 79, 50);
+		healthChangeLabel.setBounds(429, 646, 79, 50);
 		frame.getContentPane().add(healthChangeLabel);
 		
 		JLabel leftLabel = new JLabel("800");
@@ -868,7 +886,7 @@ public class OregonTrailV4 {
 			public void actionPerformed(ActionEvent e) {
 				// Gets rid of the Buying frame and puts up the default traveling image
 				buyFrame.setVisible(false);	
-				imageLbl.setIcon(trailImage);
+				imageLbl.setIcon(new ImageIcon(newImg));
 				imageLbl.setVisible(true);
 				lookAroundBtn.setEnabled(true);
 				buyBtn.setEnabled(true);
@@ -908,9 +926,10 @@ public class OregonTrailV4 {
 		buyFrame.getContentPane().add(lblYouShouldBe);
 		buyFrame.setBounds(0, 0, 777, 472);
 		frame.getContentPane().add(buyFrame);
-		imageLbl.setBounds(40, 0, 777, 472);
+		imageLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+		imageLbl.setBounds(0, 0, 794, 472);
 		frame.getContentPane().add(imageLbl);
-		imageLbl.setIcon(trailImage);
+		imageLbl.setIcon(new ImageIcon(newImg));
 		
 		JInternalFrame namingFrame = new JInternalFrame("Name Your Character");
 		namingFrame.setBounds(0, 0, 777, 472);
@@ -927,13 +946,13 @@ public class OregonTrailV4 {
 		
 		JLabel character2Lbl = new JLabel("Character #2:");
 		character2Lbl.setForeground(new Color(0, 128, 0));
-		character2Lbl.setFont(new Font("Perpetua", Font.BOLD, 11));
+		character2Lbl.setFont(new Font("Perpetua", Font.BOLD, 12));
 		character2Lbl.setBounds(36, 109, 87, 14);
 		namingFrame.getContentPane().add(character2Lbl);
 		
 		JLabel character3Lbl = new JLabel("Character #3:");
 		character3Lbl.setForeground(new Color(0, 128, 0));
-		character3Lbl.setFont(new Font("Perpetua", Font.BOLD, 11));
+		character3Lbl.setFont(new Font("Perpetua", Font.BOLD, 12));
 		character3Lbl.setBounds(36, 134, 87, 14);
 		namingFrame.getContentPane().add(character3Lbl);
 		
@@ -964,7 +983,7 @@ public class OregonTrailV4 {
 		namingFrame.getContentPane().add(character3TF);
 		
 		JLabel character4Lbl = new JLabel("Character #4:");
-		character4Lbl.setFont(new Font("Perpetua", Font.BOLD, 11));
+		character4Lbl.setFont(new Font("Perpetua", Font.BOLD, 12));
 		character4Lbl.setForeground(new Color(0, 128, 0));
 		character4Lbl.setBounds(36, 159, 87, 14);
 		namingFrame.getContentPane().add(character4Lbl);
@@ -997,7 +1016,7 @@ public class OregonTrailV4 {
 		
 		JLabel character5Lbl = new JLabel("Character #5:");
 		character5Lbl.setForeground(new Color(0, 128, 0));
-		character5Lbl.setFont(new Font("Perpetua", Font.BOLD, 11));
+		character5Lbl.setFont(new Font("Perpetua", Font.BOLD, 12));
 		character5Lbl.setBounds(36, 185, 87, 14);
 		namingFrame.getContentPane().add(character5Lbl);
 		
@@ -1018,6 +1037,13 @@ public class OregonTrailV4 {
 		annaLabel.setFont(new Font("Perpetua", Font.BOLD, 14));
 		annaLabel.setBounds(36, 43, 571, 29);
 		namingFrame.getContentPane().add(annaLabel);
+		
+		JLabel lblTheOregonTrail = new JLabel("The Oregon Trail ");
+		lblTheOregonTrail.setForeground(Color.BLACK);
+		lblTheOregonTrail.setFont(new Font("Perpetua", Font.BOLD, 24));
+		lblTheOregonTrail.setBackground(Color.BLACK);
+		lblTheOregonTrail.setBounds(361, 479, 358, 37);
+		frame.getContentPane().add(lblTheOregonTrail);
 		namingFrame.setVisible(true);
 		
 		

@@ -18,50 +18,50 @@ import java.time.Month;
 public class Weather
 {
 	//Initialize Base values for rain, snow, and temperature
-	int temp = 45;
-	double currentRainfall = 0;
-	double currentSnowfall = 0;
-	double pastRainEvent = 0;
-	double pastSnowEvent = 0;
+	private int temp = 45;
+	private double currentRainfall = 0;
+	private double currentSnowfall = 0;
+	private double pastRainEvent = 0;
+	private double pastSnowEvent = 0;
 	
 	// Initialize some probability related variables
-	final double REPEATVAL = 50.0;
-	final int TEMPVARY = 30;
-	final int EVENTPROBABILITY = 5;
-	final int PRECIPTYPEPROBABILITY = 30;
+	private final double REPEATVAL = 50.0;
+	private final int TEMPVARY = 30;
+	private final int EVENTPROBABILITY = 5;
+	private final int PRECIPTYPEPROBABILITY = 30;
 	
 	// Temperature value of Freezing point
-	final double FREEZETEMP = 32;
+	private final double FREEZETEMP = 32;
 	
 	// Different distances of sections on the trail
-	final int PLAINSDIST = 700;
-	final int DESERTDIST = 1200;
-	final int MOUNTAINDIST = 2000;
+	private final int PLAINSDIST = 700;
+	private final int DESERTDIST = 1200;
+	private final int MOUNTAINDIST = 2000;
 	
 	// minimum values for each temperature range
-	final int VERYHOTMIN = 90;
-	final int HOTMIN = 70;
-	final int WARMMIN = 50;
-	final int COOLMIN = 30;
-	final int COLDMIN = 10;
+	private final int VERYHOTMIN = 90;
+	private final int HOTMIN = 70;
+	private final int WARMMIN = 50;
+	private final int COOLMIN = 30;
+	private final int COLDMIN = 10;
 	
 	// values based off of the temperatures above
-	final int VERYHOTVAL = 5;
-	final int HOTVAL = 4;
-	final int WARMVAL = 3;
-	final int COOLVAL = 2;
-	final int COLDVAL = 1;
-	final int VERYCOLDVAL = 0;
+	private final int VERYHOTVAL = 5;
+	private final int HOTVAL = 4;
+	private final int WARMVAL = 3;
+	private final int COOLVAL = 2;
+	private final int COLDVAL = 1;
+	private final int VERYCOLDVAL = 0;
 	
 	// precipitation values and multipliers
-	final double LIGHTPRECIP = .2;
-	final double HEAVYPRECIP = .8;
-	final double DAILYRAINLOSS = 0.1;
-	final double DAILYSNOWLOSS = 0.03;
-	final int SNOWMULTIPLIER = 10;
+	private final double LIGHTPRECIP = .2;
+	private final double HEAVYPRECIP = .8;
+	private final double DAILYRAINLOSS = 0.1;
+	private final double DAILYSNOWLOSS = 0.03;
+	private final int SNOWMULTIPLIER = 10;
 	
 	// the current weather state - Sunny Skies is a place holder
-	String weatherMessage = "Sunny Skies";
+	private String weatherMessage = "Sunny Skies";
 	
 	
 	/**
@@ -210,7 +210,6 @@ public class Weather
 					weatherMessage = "Heavy snowfall";
 				}
 			}
-			
 			else if ( random < 25 )
 			{
 				//rainfall - 20% chance of happening

@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Random;
 
 public class WagonMember {
-	String memberName;
-	boolean hasIllness;
-	static Random rand = new Random(); // Needed for getting random numbers
-	static List<String> illnesses = Arrays.asList("Cholera", "Typhoid", "Measels", "Dysentery", "Fever");	
+	public String memberName;
+	public boolean hasIllness;
+	public static Random rand = new Random(); // Needed for getting random numbers
+    public	static List<String> illnesses = Arrays.asList("Cholera", "Typhoid", "Measels", "Dysentery", "Fever");	
 	
 	/**
 	 * 0 - 34: Good Health
@@ -186,7 +186,14 @@ public class WagonMember {
 	 */
 	static void restingState()
 	{
-		memberHealth -= 5;
+		if (memberHealth != 0)
+		{
+			memberHealth -= 5;
+		}
+		else if (memberHealth < 0)
+		{
+			memberHealth = 0;
+		}
 	}
 	
 	/**
