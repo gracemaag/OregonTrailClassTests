@@ -58,6 +58,7 @@ public class Weather
 	private final double HEAVYPRECIP = .8;
 	private final double DAILYRAINLOSS = 0.1;
 	private final double DAILYSNOWLOSS = 0.03;
+	private final double NOPRECIP = 0.0;
 	private final int SNOWMULTIPLIER = 10;
 	
 	// the current weather state - Sunny Skies is a place holder
@@ -138,34 +139,41 @@ public class Weather
 		}
 		
 		double random = Math.random() * 100 + 1;
-		// Bliizard random event - 5% chance of happening if temperature is low enough
+		// Blizzard random event - 5% chance of happening if temperature is low enough
 		if(temp < FREEZETEMP && random < EVENTPROBABILITY) 
 		{
 			currentSnowfall += HEAVYPRECIP * SNOWMULTIPLIER;
+			pastSnowEvent = HEAVYPRECIP * SNOWMULTIPLIER;
+			pastRainEvent = NOPRECIP;
 			weatherMessage = "Blizzard! You got stuck in snow.";
 		}
 		// thunderstorm random event - 5% chance of happening if temperature is high enough
 		else if(random < EVENTPROBABILITY && temp > FREEZETEMP)
 		{
 			currentRainfall+= HEAVYPRECIP;
+			pastRainEvent = HEAVYPRECIP;
+			pastSnowEvent = NOPRECIP;
 			weatherMessage = "Thunderstorm and Heavy Rain";
 		} 
 		
-		// Desert weather events - this is the driest and warmest stretch
+		// Desert weather events - this is the driest and warmest stretch. Updates rain/snow values accordingly
 		else if(distance < DESERTDIST && distance > PLAINSDIST)
 		{
 			if(temp < FREEZETEMP && random < 15)
 			{
 				//Snowfall - 10% chance of happening
 				double heavyOrLight = Math.random() * 100 + 1;
+				pastRainEvent = NOPRECIP;
 				if(heavyOrLight > PRECIPTYPEPROBABILITY) 
 				{
 					currentSnowfall +=  LIGHTPRECIP * SNOWMULTIPLIER;
+					pastSnowEvent = LIGHTPRECIP * SNOWMULTIPLIER;
 					weatherMessage = "Light snowfall";
 				}
 				else 
 				{
 					currentSnowfall +=  HEAVYPRECIP * SNOWMULTIPLIER;
+					pastSnowEvent = HEAVYPRECIP * SNOWMULTIPLIER;
 					weatherMessage = "Heavy snowfall";
 				}
 			}
@@ -178,19 +186,31 @@ public class Weather
 				if(heavyOrLight > PRECIPTYPEPROBABILITY) 
 				{
 					currentRainfall += LIGHTPRECIP;
+					pastRainEvent = LIGHTPRECIP;
 					weatherMessage = "Light rainfall";
 				}
 				else 
 				{
 					currentRainfall += HEAVYPRECIP;
+					pastRainEvent += HEAVYPRECIP;
 					weatherMessage = "Heavy rainfall";
 				}
 			} 
 			
 			// cloudy skies  - 25% chance of happening
-			else if(temp < FREEZETEMP && random < 40) 	weatherMessage = "Cloudy skies";
+			else if(temp < FREEZETEMP && random < 40) 
+				{
+				weatherMessage = "Cloudy skies";
+				pastRainEvent = NOPRECIP;
+				pastSnowEvent = NOPRECIP;
+				}
 			// otherwise weather is sunny
-			else	weatherMessage = "Sunny skies";
+			else	
+			{
+				weatherMessage = "Sunny skies";
+				pastRainEvent = NOPRECIP;
+				pastSnowEvent = NOPRECIP;
+			}
 		}
 		// Plains weather events - this is the most moderate stretch
 		else if (distance <= PLAINSDIST) 
@@ -202,11 +222,15 @@ public class Weather
 				if(heavyOrLight >  PRECIPTYPEPROBABILITY) 
 				{
 					currentSnowfall += LIGHTPRECIP * SNOWMULTIPLIER;
+					pastSnowEvent = LIGHTPRECIP * SNOWMULTIPLIER;
+					pastRainEvent = NOPRECIP;
 					weatherMessage = "Light snowfall";
 				}
 				else 
 				{
 					currentSnowfall +=  HEAVYPRECIP * SNOWMULTIPLIER;
+					pastSnowEvent = HEAVYPRECIP * SNOWMULTIPLIER;
+					pastRainEvent = NOPRECIP;
 					weatherMessage = "Heavy snowfall";
 				}
 			}
@@ -217,18 +241,32 @@ public class Weather
 				if(heavyOrLight > PRECIPTYPEPROBABILITY) 
 				{
 					currentRainfall +=  LIGHTPRECIP;
+					pastRainEvent = LIGHTPRECIP;
+					pastSnowEvent = NOPRECIP;
 					weatherMessage = "Light rainfall";
 				}
 				else 
 				{
 					currentRainfall += HEAVYPRECIP;
+					pastRainEvent += LIGHTPRECIP;
+					pastSnowEvent = NOPRECIP;
 					weatherMessage = "Heavy rainfall";
 				}
 		 	}
 			// cloudy skies  - 25% chance of happening
-			else if (random < 50)  { weatherMessage = "Cloudy Skies"; }
+			else if (random < 50) 
+			{ 
+				weatherMessage = "Cloudy Skies"; 
+				pastRainEvent = NOPRECIP;
+				pastSnowEvent = NOPRECIP;
+				}
 			// otherwise weather is sunny
-			else weatherMessage = "Sunny Skies";
+			else
+				{
+				weatherMessage = "Sunny Skies";
+				pastRainEvent = NOPRECIP;
+				pastSnowEvent = NOPRECIP;
+				}
 	 	}
 		
 		// Mountains weather events - the coldest and harshest stretch
@@ -241,33 +279,50 @@ public class Weather
 				if(heavyOrLight > PRECIPTYPEPROBABILITY) 
 				{
 					currentSnowfall += LIGHTPRECIP * SNOWMULTIPLIER;
+					pastSnowEvent = LIGHTPRECIP * SNOWMULTIPLIER;
+					pastRainEvent = NOPRECIP;
 					weatherMessage = "Light snowfall";
 				}
 				else 
 				{
 					currentSnowfall += HEAVYPRECIP * SNOWMULTIPLIER;
+					pastSnowEvent = HEAVYPRECIP * SNOWMULTIPLIER;
+					pastRainEvent = NOPRECIP;
 					weatherMessage = "Heavy snowfall";
 				}
 			}
 			else if (random < 20 )
 			{
 				//Rainfall - 15% chance of happening
+				pastSnowEvent = NOPRECIP;
 				double heavyOrLight = Math.random() * 100 + 1;
 				if(heavyOrLight > PRECIPTYPEPROBABILITY) 
 				{
 					currentRainfall += LIGHTPRECIP;
+					pastRainEvent = LIGHTPRECIP;
 					weatherMessage = "Light rainfall";
 				}
 				else 
 				{
 					currentRainfall += HEAVYPRECIP;
+					pastRainEvent = HEAVYPRECIP;
 					weatherMessage = "Heavy rainfall";
 				}
 			}
 		// cloudy skies  - 30% chance of happening
-		 else if (random < 50)  weatherMessage = "Cloudy Skies"; 
+		 else if (random < 50)  
+		 {
+			 weatherMessage = "Cloudy Skies"; 
+			 pastRainEvent = NOPRECIP;
+			 pastSnowEvent = NOPRECIP;
+		 }
 		// otherwise sky is sunny
-		 else weatherMessage = "Error";
+		 else  
+		 { 
+			weatherMessage =  "Sunny Skies";
+			pastRainEvent = NOPRECIP;
+			pastSnowEvent = NOPRECIP;
+		 }
 	 	}	
 		return weatherMessage;
 	}
