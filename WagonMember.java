@@ -44,7 +44,7 @@ public class WagonMember {
 	 * Rounds this value to the nearest integer to keep health at a 
 	 * whole value; Meant to represent wagon members healing through time
 	 */
-	static void dailyDecrement()
+	public static void dailyDecrement()
 	{
 		double healthPercentage =  (memberHealth * 0.20);
 		memberHealth -= healthPercentage;
@@ -59,7 +59,7 @@ public class WagonMember {
 	 * @return An integer corresponding with the random event happening, 
 	 * or 0 if none are happening
 	 */
-	static int randomHealthEvent()
+	public static int randomHealthEvent()
 	{	
 		int lostTrailProb = rand.nextInt(99);
 		if (lostTrailProb < 7)
@@ -85,7 +85,7 @@ public class WagonMember {
 	 * @param livingMembers - The amount of living wagon members
 	 * @param paceAmount - Value from 12 to 20: 12-15 = Steady, 16-18 = Strenuous, 19-20 = Grueling
 	 */
-	static void environmentalDecrement(int rationsValue, int weatherValue, ArrayList<Integer> itemAmounts, int livingMembers, int paceAmount)
+	public static void environmentalDecrement(int rationsValue, int weatherValue, ArrayList<Integer> itemAmounts, int livingMembers, int paceAmount)
 	{
 		if (rationsValue == 1) {memberHealth += 4;} // Bare Bones - higher effect than Meager, Filling has no adverse effects
 		else if (rationsValue == 2) {memberHealth += 2;} // Meager
@@ -112,7 +112,7 @@ public class WagonMember {
 	 * @return - Returns the index of the specific sick member, -1 if no members 
 	 * sick or -2 if no members are living
 	 */
-	static int illnessProb(ArrayList<WagonMember> members, int livingMembers)
+	public static int illnessProb(ArrayList<WagonMember> members, int livingMembers)
 	{
 		System.out.println("Living Members: " + livingMembers);
 		if (livingMembers == 0) // If all members are dead, none can get sick
@@ -150,7 +150,7 @@ public class WagonMember {
 	 * Gets a random illness based on the list of illnesses at top of class
 	 * @return - Illness as a string
 	 */
-	static String getIllness()
+	public static String getIllness()
 	{
 		 int randIllness = rand.nextInt(5);
 		 String illness = illnesses.get(randIllness);
@@ -163,7 +163,7 @@ public class WagonMember {
 	 * @param members - Array List of the current living member's names
 	 * @param livingMembers - The number of living members 
 	 */
-	static int isBetter(ArrayList<WagonMember> members, int livingMembers)
+	public static int isBetter(ArrayList<WagonMember> members, int livingMembers)
 	{
 		for (int i = livingMembers - 1; i >= 0; i--)
 		{
@@ -184,7 +184,7 @@ public class WagonMember {
 	 * Decrements the wagon member's health each day 
 	 * that they are resting. 
 	 */
-	static void restingState()
+	public static void restingState()
 	{
 		if (memberHealth != 0)
 		{
@@ -205,7 +205,7 @@ public class WagonMember {
 	 * Very Poor - 105 to 140
 	 * @return - String corresponding to the wagon health value.
 	 */
-	static String getHealthDescript()
+	public static String getHealthDescript()
 	{
 		if (memberHealth <35) { return "Good";}
 		else if (memberHealth <65) { return "Fair";}
