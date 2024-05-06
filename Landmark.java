@@ -2,40 +2,42 @@
  *Landmark subclass, contains methods to get and display Landmarks, as well as the buttons to
  *Look Around landmarks and Talk To people when located there.
  * @author Savannah Larsen
- * @version 1.0 9 April 2024
+ * @version 1.4 29 April 2024
  * @filename Landmark.java
  * 
  */
-package OregonTrailV4;
+package oregonTrailMVP;
 
-import java.awt.Image;
 import java.util.ArrayList;
-
+import java.util.Scanner;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 public class Landmark extends Location
 {
 	
 	// array list for landmark names and distances here
-	private ArrayList<String> landmarkNames = new ArrayList<String>();
-	private ArrayList<String> landmarkDistance = new ArrayList<String>();
+	ArrayList<String> landmarkNames = new ArrayList<String>();
+	ArrayList<String> landmarkDistance = new ArrayList<String>();
 	
-	private int currentIndex = 0;
+	int currentIndex = 0;
+	final int TOTAL_LANDMARK_INDEX = 18; // total number of landmarks
+	
 	private static final String[] namedLandmarks = { "Independence","Kansas River Crossing", 
 			"Big Blue River Crossing","Fort Kearney", "Chimney Rock", "Fort Laramie",
-			"Independence Rock", "South Pass", "Green River Crossing", "Soda Springs",
-			"Fort Hall", "Snake River Crossing", "Fort Boise", "Blue Mountains",
-			"Fort Walla Walla", "The Dalles", "Willamette Valley" }; 
+			"Independence Rock", "South Pass Crossway", "Green River Crossing", "Fort Bridger", 
+			"Soda Springs", "Fort Hall", "Snake River Crossing", "Fort Boise", 
+			"Blue Mountains Crossway", "Fort Walla Walla", "The Dalles", "Willamette Valley" }; 
 	
-	// green river crossway/dalles crossway/columbia river implementation later? 
+	// south pass: green river or fort bridger
+	// blue mountains: fort walla walla or the dalles
+	// after walla walla/dalles: Barlow Toll Road ($10) or Columbia River (deep river) Check 
+	// dalles crossway/columbia river implementation later? 
 	
 	private static final int[] distanceToLandmarks = { 0, 102, 
 							  82, 118, 250, 86,
-							  190, 120, 57, 143,
-							  57, 182, 113, 160,
-							  55, 120, 100 }; // distance to landmark
-	
+							  190, 120, 57, 125,
+							  143, 57, 182, 113, 
+							  160, 55, 125, 100 }; // distance to landmark
 	
 	private int dialogueCounter = 0; // Counter to cycle through dialogues
 	private final String[] dialogues = 
@@ -45,6 +47,7 @@ public class Landmark extends Location
 		    "Trading is often far cheaper than buying at forts, but you never know what you'll get."
 		};
 	
+	// string array for holding licenses for images 
 	private final String license[] = {"","","","","Chimney Rock 1 by Dr. Estell is licensed under CC BY-NC 4.0",
 			"", "", "", "","Soda Springs is licenced under CC BY-NC-SA 2.0 DEED","","", "","Blue Mountains is"
 					+ " licensed under CC BY 2.0 DEED", "", "", "Willamette Valley is licensed under CC BY 2.0 DEED"};
@@ -52,128 +55,131 @@ public class Landmark extends Location
 	// Initialize String array full of dialog options
 	// Dialog is based off of the diaries of Anna Maria King, a woman who traveled the trail
 	// with her husband, Stephan, and his little brother, Solomon, who is 12 at the time.
-	private final String dialog[] = {"", //Independence  - no dialog here
-					// Kansas River Crossing - Kaitlyn Reaser
-					"A woman approaches you, smiling: “The water here is so refreshing. My husband\n"
-					+ " and I have been traveling for ages, having some fresh water has really done\n"
-					+ "us well.” You nod and respond, stating that fresh water springs are common in\n"
-					+ "your home state of Massachusetts.",
-					// Big Blue River - Kaitlyn Reaser
-					"A woman comes up to you: “Isn’t it just beautiful here? I love the countryside,\n"
-					+ " always wanted to live out here and raise cattle... sounds like a very \n"
-					+ "relaxing lifestyle.” \n" 
-					+ "You laugh and agree,stating that this is also something you would love to do one day.", 
-					// Fort Kearny - Kaitlyn Reaser
-					"A man approaches you: “Could I interest you in a shortcut to Chimney Rock?\n"
-					+ " It would get you to your next stop a lot quicker. Already got about \n"
-					+ "100 other wagons coming along, should be an easy trip.” Your husband declines\n"
-					+ "the offer.",
-					// Chimney Rock - Grace Maag
-					"A sad husband says to you:\r\n"
-					+ "I have something to tell you, something that weighs heavily on my heart. \n"
-					+ "Mr. John King , my brother, and his wife met with a terrible fate, my dear.\n"
-					+ "As they attempted to cross the Kansas River, their wagon was swept away by\n"
-					+ "the current. Along with them went little Electa and their baby son.  Despite\n"
-					+ "our efforts to save them, they were unable to reach safety. This loss in this\n"
-					+ "tragedy will be felt by us all.\r\n",
-					// Fort Laramie - Savannah Larsen
-					"A young woman approaches you:\r\n"
-					+ "“Welcome to Laramie, friend! Here’s a real good place to stock up on materials.\n"
-					+ " Ya won’t see another fort for a while, so it’s best to stock up on materials\n"
-					+ "for your family while ya can. Though, there’s plenty of the folks out on the\n"
-					+ "plains in these parts ya might be able to trade with you lot when you’re out there!\r\n",
-					// Independance Rock - Grace Maag
-					"You receive a letter from your sister-in-law:\r\n"
-					+ "“I hope this letter finds you in the best of spirits, for I am just bursting\n"
-					+ "with excitement! Oh, it is a wonderful day!” I have the most joyous news, \n"
-					+ "I’m now a married woman. I exchanged a vow with Mr. Amos Kind at a modest \n"
-					+ "ceremony, filled with the warmth of our closest friends and family. I shall \n"
-					+ "cherish the moment of walking down the aisle forever. As soon as you arrive in\n"
-					+ "Oregon, you must meet him and witness the love that binds us. Until then, know\n"
-					+ "that I hold you dear to my heart and cherish our bond as friends.\n"
-					+ "With all my love, Melinda Fuller\r\n",
-					// South Pass - Savannah Larsen
-					"A guide speaks with you: \r\n"
-					+ "“It sure is a good thing we found the South Pass. Without it, the people\n"
-					+ "traversing this trail wouldn’t have even a glimpse of hope. I’m glad you\n"
-					+ "folks already got a guide through the mountains, there’s all sorts of danger\n"
-					+ "through here.”\r\n", 
-					// Green River Crossing - Grace Maag
-					"A little boy tells you\r\n: Excuse me Ma’am,\n"
-					+ "You wouldn’t believe what I found today. Fruit! Beautiful, ripe strawberries,\n"
-					+ "gooseberries, blackberries and whortleberries. They might just be the tastiest\n"
-					+ "berries I’ve ever had - Don’t worry, I brought some back for you. Careful, \n"
-					+ "ma’am, they stain - I stained my trousers. Oh, what will my sister say? I best\n"
-					+ "be getting back for dinner and show them my findings. If you want more, just\n"
-					+ "walk along the side of the river a bit. You can’t miss them.\r\n", 
-					// Soda Springs - Grace Maag
-					"You arrive at the springs and think:\r\n"
-					+ "What a remarkable sight these springs are. You really can’t help but to be\n"
-					+ "struck in awe looking at them. The water too, it must be the cleanest, chillies\n"
-					+ "water in the world. Stephan and I may stay here for a few days with the rest of\n"
-					+ "the party to gather supplies and allow the oxen to enjoy the water. Solomon and\n"
-					+ "a few of the other young boys want to try out swimming, but I’m not too sure.\n"
-					+ "One of the children could drown and that would just be plain terrible. \r\n",
-					//Fort Hall - Savannah Larsen
-					"A young man waves you over: \r\n"
-					+ "“Hiya there ma’am, welcome to Fort Hall! I know things might be in a bit of a\n"
-					+ "ruckus right now, but that’s just because we’re waitin’ to see what happens.\n"
-					+ "Did ya know that we might become a US Territory? Ya picked the right time to\n"
-					+ "travel through here, we’re stocking up in plenty of furs right now for the people\n"
-					+ "going up the trail. Buy some clothes at the store if ya need em!”\r\n", 
-					// Snake River - Savannah Larsen
-					"A nearby blacksmith strikes up a conversation:\r\n"
-					+ "“I had a cousin who went up the trail a month or so earlier. We’d been exchanging\n"
-					+ "letters at forts they stopped at along the way, but she stopped responding a\n"
-					+ "little while ago. Last thing I heard they’d decided to risk caulking the wagon along\n"
-					+ "Snake River, guess that river got the best of them. Never trust a calm looking river,\n"
-					+ "I say.”\r\n", 
-					// Fort Boise - Savannah Larsen
-					"A cook comes to talk to you:\r\n"
-					+ "“This is the right place to be if you’re looking for a classic old welcome! Feel free\n"
-					+ "to stay as long as you like, my husband and I decided to stop here along the trail a\n"
-					+ "while ago and then we never left. We definitely have better food here too, ha!”\r\n", 
-					// blue mountains - Savannah Larsen
-					"A seamstress smiles over at you:\r\n"
-					+ "“Heading through the mountains then? Make sure you’ve got plenty of food, you’re\n"
-					+ "almost there! This final stretch is one of the longest, so you best trade what you can.\n"
-					+ "Take it from me, young lady, making it up these parts with a family isn’t easy. But if\n"
-					+ "you make it to Oregon, you folks could even start up a ranch. I heard that you can raise\n"
-					+ "as many cattle as you want and it won’t cost a penny. Great idea for folks looking to settle\n"
-					+ "down over there like you.”\r\n", 
-					// Fort Walla - Kaitlyn Reaser
-					"A man approaches you and your husband: “So close to Oregon City, we’re almost there.\n"
-					+ "It's been a long journey, a lot of loss along the way. My daughter is sick, we’re\n"
-					+ "hoping to get help once we reach the city.” Your husband responds for you, stating\n"
-					+ "that his younger brother has also come down with a fever. He is hoping the same thing.",
-					// the Dalles - Savannah Larsen
-					"A guide beckons you:\r\n"
-					+ "“So you’re almost there, huh? That’s great to see ma’am! Now you’ve got two choices\n"
-					+ "ahead of you. Pick the longer trail over the rest of the Dalles or brave the treacherous\n"
-					+ "Columbia River. Up to you folks though, ma’am. As a guide, I’d recommend risking the longer\n"
-					+ "hike, that slippery river just ain’t worth it.” \r\n",
-					//Willamette Valley - Savannah Larsen
-					"A merchant smiles at you:\r\n"
-					+ "“Welcome good folk to Willamette! Must have been quite the trip from out East! Welcome to\n"
-					+ "the new frontier, you’ve got a spectacular new life ahead of you. Congratulations on making\n"
-					+ "it this far my friends, why don’t we stop and chat about your future prospects. Fine folks\n"
-					+ "like you are probably looking to start a ranch, we’ve got land aplenty for the choosing, right\n"
-					+ "this way!”\r\n"
-					+ ""
-	};
-	
-	
-	
-	//Fort Bridger - i dont know where it goes
-	/*
-	 				* A shopkeeper helps you off the wagon: \r\n
-					“There you go ma’am, glad you made it out here! We may not look like much, but this here fort's\n
-					one of the most important places on the trail. We’ve only been here for a few short years, but\n
-					we’re already one of the biggest places to stock back up on everything you need to survive the\n
-					journey. You might find some wild berries out in the wilderness and you might meet a friendly\n
-					native or two that can help you out, but why leave to chance when you kind folks can just get everything now?”
-
-	 */
+	private final String dialog[] = 
+		{
+			//Independence - Savannah Larsen
+			"A friendly passerby bids you farewell:\r\n"
+			+ "Now this will be a journey to remember! So you lot are traversing the trail\n"
+			+ "up to Willamette, huh? Make sure you’re plenty prepared, You and those boys\n"
+			+ "will need plenty of food to make it all the way up there. Remember, since\n"
+			+ "you’re leaving in April, you should make it to the Valley before Winter.\n"
+			+ "Keep track of your days and have plenty of extra wagon parts, and you\n"
+			+ "shouldn’t have a problem, ma’am!\r\n", 
+			// Kansas River Crossing - Kaitlyn Reaser
+			"A woman approaches you, smiling: “The water here is so refreshing. My husband\n"
+			+ " and I have been traveling for ages, having some fresh water has really done\n"
+			+ "us well.” You nod and respond, stating that fresh water springs are common in\n"
+			+ "your home state of Massachusetts.",
+			// Big Blue River - Kaitlyn Reaser
+			"A woman comes up to you: “Isn’t it just beautiful here? I love the countryside,\n"
+			+ " always wanted to live out here and raise cattle... sounds like a very \n"
+			+ "relaxing lifestyle.” \n" 
+			+ "You laugh and agree,stating that this is also something you would love to do one day.", 
+			// Fort Kearney - Kaitlyn Reaser
+			"A man approaches you: “Could I interest you in a shortcut to Chimney Rock?\n"
+			+ " It would get you to your next stop a lot quicker. Already got about \n"
+			+ "100 other wagons coming along, should be an easy trip.” Your husband declines\n"
+			+ "the offer.",
+			// Chimney Rock - Grace Maag
+			"A sad husband says to you:\r\n"
+			+ "I have something to tell you, something that weighs heavily on my heart. \n"
+			+ "Mr. John King , my brother, and his wife met with a terrible fate, my dear.\n"
+			+ "As they attempted to cross the Kansas River, their wagon was swept away by\n"
+			+ "the current. Along with them went little Electa and their baby son.  Despite\n"
+			+ "our efforts to save them, they were unable to reach safety. This loss in this\n"
+			+ "tragedy will be felt by us all.\r\n",
+			// Fort Laramie - Savannah Larsen
+			"A young woman approaches you:\r\n"
+			+ "“Welcome to Laramie, friend! Here’s a real good place to stock up on materials.\n"
+			+ " Ya won’t see another fort for a while, so it’s best to stock up on materials\n"
+			+ "for your family while ya can. Though, there’s plenty of the folks out on the\n"
+			+ "plains in these parts ya might be able to trade with you lot when you’re out there!\r\n",
+			// Independence Rock - Grace Maag
+			"You receive a letter from your sister-in-law:\r\n"
+			+ "“I hope this letter finds you in the best of spirits, for I am just bursting\n"
+			+ "with excitement! Oh, it is a wonderful day!” I have the most joyous news, \n"
+			+ "I’m now a married woman. I exchanged a vow with Mr. Amos Kind at a modest \n"
+			+ "ceremony, filled with the warmth of our closest friends and family. I shall \n"
+			+ "cherish the moment of walking down the aisle forever. As soon as you arrive in\n"
+			+ "Oregon, you must meet him and witness the love that binds us. Until then, know\n"
+			+ "that I hold you dear to my heart and cherish our bond as friends.\n"
+			+ "With all my love, Melinda Fuller\r\n",
+			// South Pass Crossway - Savannah Larsen
+			"A guide speaks with you: \r\n"
+			+ "“It sure is a good thing we found the South Pass. Without it, the people\n"
+			+ "traversing this trail wouldn’t have even a glimpse of hope. I’m glad you\n"
+			+ "folks already got a guide through the mountains, there’s all sorts of danger\n"
+			+ "through here.”\r\n", 
+			// Green River Crossing - Grace Maag
+			"A little boy tells you\r\n: Excuse me Ma’am,\n"
+			+ "You wouldn’t believe what I found today. Fruit! Beautiful, ripe strawberries,\n"
+			+ "gooseberries, blackberries and whortleberries. They might just be the tastiest\n"
+			+ "berries I’ve ever had - Don’t worry, I brought some back for you. Careful, \n"
+			+ "ma’am, they stain - I stained my trousers. Oh, what will my sister say? I best\n"
+			+ "be getting back for dinner and show them my findings. If you want more, just\n"
+			+ "walk along the side of the river a bit. You can’t miss them.\r\n", 
+			// Fort Bridger - Savannah Larsen
+			"A shopkeeper helps you off the wagon:\r\n"
+			+ "There you go ma’am, glad you made it out here! We may not look like much, but this\n"
+			+ "here fort's one of the most important places on the trail. We’ve only been here for a\n"
+			+ "few short years, but we’re already one of the biggest places to stock back up on\n"
+			+ "everything you need to survive the journey. You might find some wild berries out in\n"
+			+ "the wilderness and you might meet a friendly native or two that can help you out, but\n"
+			+ "why leave to chance when you kind folks can just get everything now?”\r\n",
+			// Soda Springs - Grace Maag
+			"You arrive at the springs and think:\r\n"
+			+ "What a remarkable sight these springs are. You really can’t help but to be\n"
+			+ "struck in awe looking at them. The water too, it must be the cleanest, chillies\n"
+			+ "water in the world. Stephan and I may stay here for a few days with the rest of\n"
+			+ "the party to gather supplies and allow the oxen to enjoy the water. Solomon and\n"
+			+ "a few of the other young boys want to try out swimming, but I’m not too sure.\n"
+			+ "One of the children could drown and that would just be plain terrible. \r\n",
+			//Fort Hall - Savannah Larsen
+			"A young man waves you over: \r\n"
+			+ "“Hiya there ma’am, welcome to Fort Hall! I know things might be in a bit of a\n"
+			+ "ruckus right now, but that’s just because we’re waitin’ to see what happens.\n"
+			+ "Did ya know that we might become a US Territory? Ya picked the right time to\n"
+			+ "travel through here, we’re stocking up in plenty of furs right now for the people\n"
+			+ "going up the trail. Buy some clothes at the store if ya need em!”\r\n", 
+			// Snake River Crossing - Savannah Larsen
+			"A nearby blacksmith strikes up a conversation:\r\n"
+			+ "“I had a cousin who went up the trail a month or so earlier. We’d been exchanging\n"
+			+ "letters at forts they stopped at along the way, but she stopped responding a\n"
+			+ "little while ago. Last thing I heard they’d decided to risk caulking the wagon along\n"
+			+ "Snake River, guess that river got the best of them. Never trust a calm looking river,\n"
+			+ "I say.”\r\n", 
+			// Fort Boise - Savannah Larsen
+			"A cook comes to talk to you:\r\n"
+			+ "“This is the right place to be if you’re looking for a classic old welcome! Feel free\n"
+			+ "to stay as long as you like, my husband and I decided to stop here along the trail a\n"
+			+ "while ago and then we never left. We definitely have better food here too, ha!”\r\n", 
+			// Blue Mountains Crossway - Savannah Larsen
+			"A seamstress smiles over at you:\r\n"
+			+ "“Heading through the mountains then? Make sure you’ve got plenty of food, you’re\n"
+			+ "almost there! This final stretch is one of the longest, so you best trade what you can.\n"
+			+ "Take it from me, young lady, making it up these parts with a family isn’t easy. But if\n"
+			+ "you make it to Oregon, you folks could even start up a ranch. I heard that you can raise\n"
+			+ "as many cattle as you want and it won’t cost a penny. Great idea for folks looking to settle\n"
+			+ "down over there like you.”\r\n", 
+			// Fort Walla Walla - Kaitlyn Reaser
+			"A man approaches you and your husband: “So close to Oregon City, we’re almost there.\n"
+			+ "It's been a long journey, a lot of loss along the way. My daughter is sick, we’re\n"
+			+ "hoping to get help once we reach the city.” Your husband responds for you, stating\n"
+			+ "that his younger brother has also come down with a fever. He is hoping the same thing.",
+			// The Dalles - Savannah Larsen
+			"A guide beckons you:\r\n"
+			+ "“So you’re almost there, huh? That’s great to see ma’am! Now you’ve got two choices\n"
+			+ "ahead of you. Pick the longer trail over the rest of the Dalles or brave the treacherous\n"
+			+ "Columbia River. Up to you folks though, ma’am. As a guide, I’d recommend risking the longer\n"
+			+ "hike, that slippery river just ain’t worth it.” \r\n", 
+			// Willamette Valley - Savannah Larsen
+			"A merchant smiles at you:\r\n"
+			+ "“Welcome good folk to Willamette! Must have been quite the trip from out East! Welcome to\n"
+			+ "the new frontier, you’ve got a spectacular new life ahead of you. Congratulations on making\n"
+			+ "it this far my friends, why don’t we stop and chat about your future prospects. Fine folks\n"
+			+ "like you are probably looking to start a ranch, we’ve got land aplenty for the choosing, right\n"
+			+ "this way!”\r\n"
+		};
 	
 	// Initialize image icons
 	ImageIcon independance = new ImageIcon("C:\\Users\\gemaa\\Downloads\\Independence.png");
@@ -197,15 +203,13 @@ public class Landmark extends Location
 	ImageIcon FortBridger = new ImageIcon("");
 	ImageIcon BarlowTollRoad = new ImageIcon("C:\\Users\\gemaa\\Downloads\\BarlowTollRoad.png");
 	
-	
-	
 	// make array of the image icons to be used
 	private final ImageIcon[] landmarkImages = 
 		{
-			independance, kansasRiver, blueRiver, fortKearney,
-			chimneyRock, fortLaramie, independanceRock, southPass, greenRiverCrossing, 
-			sodaSprings, fortHall, snakeRiverCrossing, fortBoise, blueMountains,
-			fortWallaWalla, theDalles, willametteValley
+				independance, kansasRiver, blueRiver, fortKearney,
+				chimneyRock, fortLaramie, independanceRock, southPass, greenRiverCrossing, 
+				sodaSprings, fortHall, snakeRiverCrossing, fortBoise, blueMountains,
+				fortWallaWalla, theDalles, willametteValley
 		};
 	
 	/**
@@ -246,7 +250,7 @@ public class Landmark extends Location
 	 */
 	public String getLandmarkName()
 	{
-		if(currentIndex < 17)
+		if(currentIndex < TOTAL_LANDMARK_INDEX)
 		{
 		return landmarkNames.get(currentIndex);
 		}
@@ -266,10 +270,28 @@ public class Landmark extends Location
         return landmark.contains("Fort"); // Simple check if landmark name contains "Fort"
 	}
 	
+	/**
+	 *
+	 * Checks if current landmark is a river
+	 * @return true if landmark is a river, false otherwise 
+	 * 
+	 */
 	public boolean isRiver() 
 	{
 		String landmark = landmarkNames.get(currentIndex);
 		return landmark.contains("River");
+	} 
+	
+	/**
+	 *
+	 * Checks if current landmark is a crossway
+	 * @return true if landmark is a crossway, false otherwise 
+	 * 
+	 */
+	public boolean isCrossway() 
+	{
+		String landmark = landmarkNames.get(currentIndex);
+		return landmark.contains("Crossway");
 	} 
 	
 	/**
@@ -280,8 +302,55 @@ public class Landmark extends Location
 	 * 
 	 */
 	public boolean atLandmark(int distance)
-	{
+	{	
 		int currentDistance = getTotalTraveled(); // Use getTotalTraveled from superclass
+		boolean atCrossway = isCrossway();
+		
+		if (atCrossway)
+		// prompt player for choice change in implementation
+		{
+			Scanner scanner = new Scanner(System.in);
+	        int choice = scanner.nextInt();
+
+	        if (currentIndex == 7) //South Pass Crossway is at index 15
+	        {
+	            // Offer options for South Pass Crossway
+	            System.out.println("You are at South Pass Crossway. Choose your next destination:");
+	            System.out.println("1. Green River Crossing");
+	            System.out.println("2. Fort Bridger");
+	            System.out.println("Enter your choice:");
+
+	            choice = scanner.nextInt();
+	            switch (choice) {
+	                case 1:
+	                    currentIndex = 8; // Move to Green River Crossing
+	                    break;
+	                case 2:
+	                    currentIndex = 9; // Move to Fort Bridger
+	                    break;
+	            }
+	        } 
+	        else if (currentIndex == 15) // Blue Mountains Crossway is at index 15
+	        {
+	            // Offer options for Blue Mountains Crossway
+	            System.out.println("You are at Blue Mountains Crossway. Choose your next destination:");
+	            System.out.println("1. Fort Walla Walla");
+	            System.out.println("2. The Dalles");
+	            System.out.println("Enter your choice:");
+
+	            choice = scanner.nextInt();
+	            switch (choice) {
+	                case 1:
+	                    currentIndex = 16; // Move to Fort Walla Walla
+	                    break;
+	                case 2:
+	                    currentIndex = 17; // Move to The Dalles
+	                    break;
+	            }
+	        }
+	        return true;
+	    }
+		
         return distance == currentDistance;
 	}
 	
@@ -292,7 +361,7 @@ public class Landmark extends Location
 	public void lookAroundOption()
 	{
 		String landmarkName = landmarkNames.get(currentIndex);
-		String currentDate = dateString(); // get current date from superclass
+		String currentDate = DateString(); // get current date from superclass
 		
 		 System.out.println("[Photo Placeholder]");
 		 System.out.println("You are at " + landmarkName + ".");
@@ -338,7 +407,6 @@ public class Landmark extends Location
 	{
 		if(currentIndex > 0) 
 		{
-			
 		return landmarkImages[currentIndex - 1];
 		}
 		return independance ;
@@ -352,9 +420,9 @@ public class Landmark extends Location
 	{
 		if(currentIndex > 0)
 		{
-			return namedLandmarks[currentIndex-1] + "is liscensed by William Henry Jackson";
+			return license[currentIndex - 1];
 		}
-			return "Independence is licsensed by William Henry Jackson";
+			return "";
 	}
 	
 	/**
