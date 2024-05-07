@@ -25,6 +25,9 @@ public class River extends Landmark
 	private String flowRate[] = {"slow", "fast", "slow", "fast"};
 	private int riverIndex = 0;
 	private final int rainMultiplier = 4;
+	private final int FORDCHOICE = 1; //fording the river option
+	private final int CAULKCHOICE = 2; // caulking the wagon option
+	private final int MULTICHOICE = 3; // variety of different options here - depends on current river
 	
 	/**
 	 * displayRiverStats - will display each river's stats as well as display
@@ -35,7 +38,7 @@ public class River extends Landmark
 	{
 		double tempDepth = depth[riverIndex] +
 				rainMultiplier * rain; 
-		String.format("$%,.1f", tempDepth);
+		String.format("$%", ".1f", tempDepth);
 		String message = "You have arrived at " + riverName[riverIndex]
 				+ ". This river has a " + flowRate[riverIndex] + " current and is " 
 				+ width[riverIndex]  + " feet wide and " + tempDepth
@@ -72,16 +75,21 @@ public class River extends Landmark
 	 */
 	public String crossRiver(int choice, int wagonWeight, double rain) 
 	{
-		// create a temporary depth variable to store the new river depth that is dependent on recent rain
+		/*
+		 *  create a temporary depth variable to store the new river depth that is dependent on recent rain
+		 */
 		double tempDepth =  depth[riverIndex] + rainMultiplier * rain;
-		// choice 1: fording the river. Player can get stuck in mud, lose items,
-		// safely cross the river, or lose the entire wagon and end the game.
-		// This is all dependent on the depth of the river
-		if(choice == 1) 
+		/*
+		 *  choice 1: fording the river. Player can get stuck in mud, lose items,
+		 *  safely cross the river, or lose the entire wagon and end the game.
+		 This is all dependent on the depth of the river
+		 */
+		if(choice == FORDCHOICE) 
 		{
 			if(tempDepth < 2.5)
 			{
 				double random = Math.random() *100;
+				// 40% chance of getting stuck in mud
 				if(random < 40)	 return "You are stuck in mud. Days lost: 1."; 
 				else return "You have safely forded the river.";
 			}	
@@ -90,17 +98,20 @@ public class River extends Landmark
 			{
 				double random = Math.random() *100;
 				System.out.println(random);
+				// 20% chance of getting stuck in mud
 				if(random < 20)	{ return "You are stuck in mud. Days lost: 1."; }
+				// 70% chance of losing some supplies
 				else if (random < 90) { return "You have lost some supplies."; }
 				else { return "You have safely forded the river.";}
 			}
+			// if the depth is more than 5 feet, game automatically ends
 			return "You lost your wagon and all supplies in it. Game Over.";
 		}
 		
 		// choice 2: caulking the wagon.  Player can get stuck in mud, lose items,
 		// safely cross the river, or lose the entire wagon and end the game.This is
 		// Dependent on current (flow rate), river width, and wagon weight.
-		if(choice == 2)
+		if(choice == CAULKCHOICE)
 		{
 			if(flowRate[riverIndex].contains("fast")) return "You have lost some supplies."; 
 			if(tempDepth < 2.5)	return "You are stuck in mud. Days lost: 1.";	
@@ -174,25 +185,27 @@ public class River extends Landmark
 		
 		// choice 3: dependent on what river the player is currently at. This information used can
 		// be found at https://gamefaqs.gamespot.com/mac/564877-the-oregon-trail/faqs/30964
-		if(choice == 3)
+		if(choice == MULTICHOICE)
 		{
 			//index 1: wait for the current to slow. Will result in losing 2 day's time and food.
-			if(riverIndex == 1) 
+			// This is 
+			if(riverName[riverIndex].contains("Blue")) 
 			{
 				return "You waited 2 days to safely cross the river.";
 			}
 			//index 2: take a ferry to cross, safe every time. Will result in losing $5.00
-			if(riverIndex == 2)
+			if(riverName[riverIndex].contains("Green"))
 			{
 				return "You took a ferry for $5.00 and safely crossed the river.";
 			}
 			//index 3: hire a guide to cross, safe every time. Will result in losing 3 clothing
-			if(riverIndex == 3)
+			if(riverName[riverIndex].contains("Snake"))
 			{
 				return "You hired a guide for 3 clothing and safely crossed the river.";
 			}
 		}
-		return "Error - Invalid Input";
+		return "Error - Invalid Input. Please try again.\n"
+				+ "Enter 1 to ford the river or 2 to caulk your wagon";
 	}
 	
 	
