@@ -1,4 +1,13 @@
-package OregonTrailV4;
+/**
+ * Oxen subclass. Contains methods for instantiating an Oxen object,
+ * as well as overseeing Oxen health. The main purpose of the class is to 
+ * give Oxen the ability to get sick and die, both of which is up to random
+ * chance and is not able to changed by the player. 
+ * @author Kaitlyn Reaser
+ * @version 1.0 06 May 2024
+ * @filename Oxen.java
+ */
+package oregonTrail;
 
 import java.util.ArrayList;
 
@@ -27,7 +36,7 @@ public class Oxen extends Item
 	 * @return An integer corresponding to the state of Oxen's injuries
 	 * -1 - No oxen are sick or dead.
 	 * 1 - All oxen are dead.
-	 * 2 - An oxen has dead.
+	 * 2 - An oxen has died.
 	 * 3 - An oxen is sick. 
 	 */
 	static int injuryChance (ArrayList<Integer> itemAmounts)

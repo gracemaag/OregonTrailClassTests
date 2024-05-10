@@ -1,4 +1,4 @@
-package OregonTrailV4;
+package oregonTrail;
 import java.lang.Object;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -6,25 +6,25 @@ import java.time.Month;
 
 /** Location class, contains information on traveling and the date
 	@author Grace Maag
-	@version 1.0 9 April 2024
+	@version 1.3 27 April 2024
 	@filename WagonMember.java
  */
 public class Location 
 {
 	public Location() {	}
 
-	/*
+	/**
 	 * Set up all objects and variables relating to the current in-ganme date
 	 * For this MVP, the wagon will begin it's journey on April 1st, 1848
 	 */
-	LocalDate currentDate = LocalDate.of(1848, 4,1);
+	LocalDate currentDate = LocalDate.of(1845, 4,1);
 	int day = currentDate.getDayOfMonth();
 	DayOfWeek dOW = currentDate.getDayOfWeek();
 	Month month = currentDate.getMonth();
 	int year =  currentDate.getYear();
 	
 	
-	/*
+	/**
 	 * Initialize all variables relating to distances
 	 * or traveling
 	 */
@@ -108,7 +108,7 @@ public class Location
 		return distanceToNext;
 	}
 	
-	/*
+	/**
 	 * Increments one day without changing the distance variables 
 	 */
 	public void rest() 

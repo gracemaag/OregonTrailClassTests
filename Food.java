@@ -5,7 +5,7 @@
 	@version 1.0 9 April 2024
 	@filename Food.java
 */
-package OregonTrailV4;
+package oregonTrail;
 
 import java.util.ArrayList;
 

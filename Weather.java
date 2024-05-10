@@ -1,4 +1,4 @@
-package OregonTrailV4;
+package oregonTrail;
 
 import java.time.Month;
 /**
@@ -11,7 +11,6 @@ import java.time.Month;
 * @author Grace Maag
 * @version 1.0 29 April 2024
 * @filename Weather.java
-* 
 */
 
 
@@ -375,4 +374,3 @@ public class Weather
 	}
 	
 }
-

@@ -6,7 +6,7 @@
 	@filename Item.java
 */
 
-package OregonTrailV4;
+package oregonTrail;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -76,6 +76,10 @@ public class Item
 		 {
 			 tradeString = "pairs of Clothes";
 		 }
+		 else if (randIntTrade == 5)
+		 {
+			 tradeString = "Medicine";
+		 }
 		 
 		 if (randIntTrade == 4)
 		 {
@@ -87,7 +91,7 @@ public class Item
 		 int randIntGive = 0;
 		 do // Ensures the player has the item requested, and that the item request/item given is not the same
 		 { 
-			 randIntGive = rand.nextInt(4); 
+			 randIntGive = rand.nextInt(5); 
 		 } while (itemAmounts.get(randIntGive) == 0 || randIntGive == randIntTrade);
 		 
 		 String giveString = " ";
@@ -114,8 +118,17 @@ public class Item
 			 giveString = "Wagon Axles";
 		 }
 		 else if (randIntGive == 2)
-		 {
+		 { 
 			 giveString = "pairs of Clothes";
+		 }
+		 //ADded
+		 else if (randIntGive == 4)
+		 { 
+			 giveString = "Oxen";
+		 }
+		 else if (randIntGive == 5)
+		 {
+			 giveString = "Medicine";
 		 }
 		 
 		 // Variables necessary for the acceptTrade method
@@ -124,7 +137,7 @@ public class Item
 		 tradeItem = randIntTrade;
 		 giveItem = randIntGive;
 		
-		 return "Traveler would like to trade " + randIntAmount + " " + tradeString + ". They want " + randIntGiveAmount + " " + giveString + ".";	 
+		 return "Traveler would like to trade with you. You would recieve " + randIntAmount + " " + tradeString + ". They would recieve " + randIntGiveAmount + " " + giveString + ".";	 
 	}
 	
 	/**
@@ -145,7 +158,7 @@ public class Item
 	 * Updates the wagon contents based on what the user wishes to buy from
 	 * the main. Item types are represented as values, and passed through all
 	 * methods as: 
-	 * 0 - Wagon Wheel 1 - Wagon Axle 2 - Clothing 3 - Food 
+	 * 0 - Wagon Wheel 1 - Wagon Axle 2 - Clothing 3 - Food 5 - Medicine
 	 * The total weight of the wagon is updated based on purchases
 	 * @param itemContents - The contents of the wagon (always the same)
 	 * @param itemAmounts - The amounts of each item in the wagon
@@ -162,7 +175,7 @@ public class Item
 	/**
 	 * Returns the price of an item  based on the item type number passed
 	 * to the method. Each item has a number corresponding with it:
-	 * 0 - Wagon Wheel 1 - Wagon Axle 2 - Clothing 3 - Food 4 - Oxen
+	 * 0 - Wagon Wheel 1 - Wagon Axle 2 - Clothing 3 - Food 4 - Oxen 5 - Medicine
 	 * @param itemContents - The contents of the wagon (always the same)
 	 * @param itemType - The number corresponding with each item
 	 * @return - The price of the item specified by the item type
@@ -173,6 +186,13 @@ public class Item
 		return tempItem.itemPrice;
 	}
 	
+	/**
+	 * Runs if the player loses items when trying to cross a river. Determines
+	 * a random item kind and a random amount of that item that is lost
+	 * 0 - Wagon Wheel 1 - Wagon Axle 2 - Clothing 3 - Food 5 - Medicine
+	 * @param itemAmounts - Array List containing amounts of each item
+	 * @return - A string stating to the player the items that have been lost
+	 */
 	static String itemLoss(ArrayList<Integer> itemAmounts)
 	{
 		
@@ -181,13 +201,13 @@ public class Item
 		String itemString = " ";
 		
 		randItem1 = rand.nextInt(5);
-		while (itemAmounts.get(randItem1) == 0)
+		while (itemAmounts.get(randItem1) == 0) // Ensures the item chosen is something the player has
 		{
 			randItem1 = rand.nextInt(5);
 		}
 		
 		randItemAmount1 = rand.nextInt(5);
-		if (randItem1 != 3)
+		if (randItem1 != 3) // For non-food items
 		{
 			while (randItemAmount1 == 0 || randItemAmount1 > itemAmounts.get(randItem1))
 			{
@@ -195,7 +215,7 @@ public class Item
 			}
 		}
 		
-		else
+		else // For food items, multiplies amount lost by 5 to account for how much food is typically had
 		{
 			while (randItemAmount1 == 0 || randItemAmount1 * 100 > itemAmounts.get(randItem1))
 			{
@@ -203,16 +223,16 @@ public class Item
 			}
 		}
 		
+		// Determines which string corresponds with the random item number
 		if (randItem1 == 0) { itemString = " Wagon Wheels";}
 		else if (randItem1 == 1) { itemString = " Wagon Axles ";}
 		else if (randItem1 == 2) { itemString = " pairs of Clothes";}
 		else if (randItem1 == 3) { itemString = " pounds of Food"; randItemAmount1 *= 100;}
 		else if (randItem1 == 4) { itemString = " Oxen";}
 		
-		 int currentTotal1 = itemAmounts.get(randItem1);
-		 itemAmounts.set(randItem1, currentTotal1 - randItemAmount1);
+		int currentTotal1 = itemAmounts.get(randItem1);
+		itemAmounts.set(randItem1, currentTotal1 - randItemAmount1); // Removes items lost from wagon contents
 		 
-		System.out.println("You have lost " + randItemAmount1 + itemString );
 		return "You have lost " + randItemAmount1 + itemString;
 	}
 	

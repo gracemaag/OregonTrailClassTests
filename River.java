@@ -1,4 +1,4 @@
-package OregonTrailV4;
+package oregonTrail;
 
 /**
  *
@@ -18,16 +18,13 @@ public class River extends Landmark
 	public River(){}
 	
 	// Initialize river names and related values for each river
-	private String riverName[] = {"Kansas River Crossing", "Big Blue River Crossing", 
+	String riverName[] = {"Kansas River Crossing", "Big Blue River Crossing", 
 			"Green River Crossing", "Snake River Crossing"};
-	private int width[] = {620, 200, 1000,  800};
-	private int depth[] = {2, 5, 20, 8};
-	private String flowRate[] = {"slow", "fast", "slow", "fast"};
-	private int riverIndex = 0;
-	private final int rainMultiplier = 4;
-	private final int FORDCHOICE = 1; //fording the river option
-	private final int CAULKCHOICE = 2; // caulking the wagon option
-	private final int MULTICHOICE = 3; // variety of different options here - depends on current river
+	int width[] = {620, 200, 1000,  800};
+	int depth[] = {2, 5, 20, 8};
+	String flowRate[] = {"slow", "fast", "slow", "fast"};
+	int riverIndex = 0;
+	final int rainMultiplier = 4;
 	
 	/**
 	 * displayRiverStats - will display each river's stats as well as display
@@ -38,7 +35,7 @@ public class River extends Landmark
 	{
 		double tempDepth = depth[riverIndex] +
 				rainMultiplier * rain; 
-		String.format("$%", ".1f", tempDepth);
+		String.format("$%,.1f", tempDepth);
 		String message = "You have arrived at " + riverName[riverIndex]
 				+ ". This river has a " + flowRate[riverIndex] + " current and is " 
 				+ width[riverIndex]  + " feet wide and " + tempDepth
@@ -75,21 +72,16 @@ public class River extends Landmark
 	 */
 	public String crossRiver(int choice, int wagonWeight, double rain) 
 	{
-		/*
-		 *  create a temporary depth variable to store the new river depth that is dependent on recent rain
-		 */
+		// create a temporary depth variable to store the new river depth that is dependent on recent rain
 		double tempDepth =  depth[riverIndex] + rainMultiplier * rain;
-		/*
-		 *  choice 1: fording the river. Player can get stuck in mud, lose items,
-		 *  safely cross the river, or lose the entire wagon and end the game.
-		 This is all dependent on the depth of the river
-		 */
-		if(choice == FORDCHOICE) 
+		// choice 1: fording the river. Player can get stuck in mud, lose items,
+		// safely cross the river, or lose the entire wagon and end the game.
+		// This is all dependent on the depth of the river
+		if(choice == 1) 
 		{
 			if(tempDepth < 2.5)
 			{
 				double random = Math.random() *100;
-				// 40% chance of getting stuck in mud
 				if(random < 40)	 return "You are stuck in mud. Days lost: 1."; 
 				else return "You have safely forded the river.";
 			}	
@@ -98,20 +90,17 @@ public class River extends Landmark
 			{
 				double random = Math.random() *100;
 				System.out.println(random);
-				// 20% chance of getting stuck in mud
 				if(random < 20)	{ return "You are stuck in mud. Days lost: 1."; }
-				// 70% chance of losing some supplies
 				else if (random < 90) { return "You have lost some supplies."; }
 				else { return "You have safely forded the river.";}
 			}
-			// if the depth is more than 5 feet, game automatically ends
 			return "You lost your wagon and all supplies in it. Game Over.";
 		}
 		
 		// choice 2: caulking the wagon.  Player can get stuck in mud, lose items,
 		// safely cross the river, or lose the entire wagon and end the game.This is
 		// Dependent on current (flow rate), river width, and wagon weight.
-		if(choice == CAULKCHOICE)
+		if(choice == 2)
 		{
 			if(flowRate[riverIndex].contains("fast")) return "You have lost some supplies."; 
 			if(tempDepth < 2.5)	return "You are stuck in mud. Days lost: 1.";	
@@ -185,27 +174,25 @@ public class River extends Landmark
 		
 		// choice 3: dependent on what river the player is currently at. This information used can
 		// be found at https://gamefaqs.gamespot.com/mac/564877-the-oregon-trail/faqs/30964
-		if(choice == MULTICHOICE)
+		if(choice == 3)
 		{
 			//index 1: wait for the current to slow. Will result in losing 2 day's time and food.
-			// This is 
-			if(riverName[riverIndex].contains("Blue")) 
+			if(riverIndex == 1) 
 			{
 				return "You waited 2 days to safely cross the river.";
 			}
 			//index 2: take a ferry to cross, safe every time. Will result in losing $5.00
-			if(riverName[riverIndex].contains("Green"))
+			if(riverIndex == 2)
 			{
 				return "You took a ferry for $5.00 and safely crossed the river.";
 			}
 			//index 3: hire a guide to cross, safe every time. Will result in losing 3 clothing
-			if(riverName[riverIndex].contains("Snake"))
+			if(riverIndex == 3)
 			{
 				return "You hired a guide for 3 clothing and safely crossed the river.";
 			}
 		}
-		return "Error - Invalid Input. Please try again.\n"
-				+ "Enter 1 to ford the river or 2 to caulk your wagon";
+		return "Error - Invalid Input";
 	}
 	
 	

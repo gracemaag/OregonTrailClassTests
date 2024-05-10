@@ -6,7 +6,7 @@
  * @filename Landmark.java
  * 
  */
-package oregonTrailMVP;
+package oregonTrail;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -28,11 +28,12 @@ public class Landmark extends Location
 			"Soda Springs", "Fort Hall", "Snake River Crossing", "Fort Boise", 
 			"Blue Mountains Crossway", "Fort Walla Walla", "The Dalles", "Willamette Valley" }; 
 	
-	// south pass: green river or fort bridger
-	// blue mountains: fort walla walla or the dalles
-	// after walla walla/dalles: Barlow Toll Road ($10) or Columbia River (deep river) Check 
-	// dalles crossway/columbia river implementation later? 
-	
+	/**
+	* south pass: green river or fort bridger
+	* blue mountains: fort walla walla or the dalles
+	* after walla walla/dalles: Barlow Toll Road ($10) or Columbia River (deep river) Check 
+	* dalles crossway/columbia river implementation later? 
+	*/
 	private static final int[] distanceToLandmarks = { 0, 102, 
 							  82, 118, 250, 86,
 							  190, 120, 57, 125,
@@ -52,9 +53,11 @@ public class Landmark extends Location
 			"", "", "", "","Soda Springs is licenced under CC BY-NC-SA 2.0 DEED","","", "","Blue Mountains is"
 					+ " licensed under CC BY 2.0 DEED", "", "", "Willamette Valley is licensed under CC BY 2.0 DEED"};
 	
-	// Initialize String array full of dialog options
-	// Dialog is based off of the diaries of Anna Maria King, a woman who traveled the trail
-	// with her husband, Stephan, and his little brother, Solomon, who is 12 at the time.
+	/** 
+	* Initialize String array full of dialog options
+	* Dialog is based off of the diaries of Anna Maria King, a woman who traveled the trail
+	* with her husband, Stephan, and his little brother, Solomon, who is 12 at the time.
+	*/
 	private final String dialog[] = 
 		{
 			//Independence - Savannah Larsen
@@ -181,27 +184,27 @@ public class Landmark extends Location
 			+ "this way!”\r\n"
 		};
 	
-	// Initialize image icons
-	ImageIcon independance = new ImageIcon("C:\\Users\\gemaa\\Downloads\\Independence.png");
-	ImageIcon kansasRiver = new ImageIcon("C:\\Users\\gemaa\\Downloads\\KansasRiver.png");
-	ImageIcon blueRiver = new ImageIcon("C:\\Users\\gemaa\\Downloads\\BigBlueRiver.png");
-	ImageIcon fortKearney = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\FortKearny.png");
-	ImageIcon chimneyRock = new ImageIcon("C:\\Users\\gemaa\\Downloads\\ChimneyRock.png");
-	ImageIcon fortLaramie = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\FortLaramie.png");
-	ImageIcon independanceRock = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\IndependenceRock.png");
-	ImageIcon southPass = new ImageIcon ("C:\\Users\\gemaa\\Downloads\\SouthPass.png");
-	ImageIcon greenRiverCrossing = new ImageIcon("C:\\Users\\gemaa\\Downloads\\GreenRiver.png");
-	ImageIcon sodaSprings = new ImageIcon("C:\\Users\\gemaa\\Downloads\\SodaSprings.png");
-	ImageIcon fortHall = new ImageIcon("C:\\Users\\gemaa\\Downloads\\FortHall.png");
-	ImageIcon snakeRiverCrossing = new ImageIcon("C:\\Users\\gemaa\\Downloads\\SnakeRiver.png");
-	ImageIcon fortBoise = new ImageIcon("C:\\Users\\gemaa\\Downloads\\FortBoise.png");
-	ImageIcon blueMountains = new ImageIcon("C:\\Users\\gemaa\\Downloads\\BlueMountains.png");
-	ImageIcon fortWallaWalla = new ImageIcon("C:\\Users\\gemaa\\Downloads\\FortWallaWalla.png");
-	ImageIcon theDalles = new ImageIcon("C:\\Users\\gemaa\\Downloads\\TheDalles.png");
-	ImageIcon willametteValley = new ImageIcon("C:\\Users\\gemaa\\Downloads\\WillametteValley.png");
+	// Initialize image icons "C:\Users\rease\Downloads\BlueMountains.png"
+	ImageIcon independance = new ImageIcon("C:\\Users\\rease\\Downloads\\Independence.png");
+	ImageIcon kansasRiver = new ImageIcon("C:\\Users\\rease\\Downloads\\KansasRiver.png");
+	ImageIcon blueRiver = new ImageIcon("C:\\Users\\rease\\Downloads\\BigBlueRiver.png");
+	ImageIcon fortKearney = new ImageIcon ("C:\\Users\\rease\\Downloads\\FortKearny.png");
+	ImageIcon chimneyRock = new ImageIcon("C:\\Users\\rease\\Downloads\\ChimneyRock.png");
+	ImageIcon fortLaramie = new ImageIcon ("C:\\Users\\rease\\Downloads\\FortLaramie.png");
+	ImageIcon independanceRock = new ImageIcon ("C:\\Users\\rease\\Downloads\\IndependenceRock.png");
+	ImageIcon southPass = new ImageIcon ("C:\\Users\\rease\\Downloads\\SouthPass.png");
+	ImageIcon greenRiverCrossing = new ImageIcon("C:\\Users\\rease\\Downloads\\GreenRiver.png");
+	ImageIcon sodaSprings = new ImageIcon("C:\\Users\\rease\\Downloads\\SodaSprings.png");
+	ImageIcon fortHall = new ImageIcon("C:\\Users\\rease\\Downloads\\FortHall.png");
+	ImageIcon snakeRiverCrossing = new ImageIcon("C:\\Users\\rease\\Downloads\\SnakeRiver.png");
+	ImageIcon fortBoise = new ImageIcon("C:\\Users\\rease\\Downloads\\FortBoise.png");
+	ImageIcon blueMountains = new ImageIcon("C:\\Users\\rease\\Downloads\\BlueMountains.png");
+	ImageIcon fortWallaWalla = new ImageIcon("C:\\Users\\rease\\Downloads\\FortWallaWalla.png");
+	ImageIcon theDalles = new ImageIcon("C:\\Users\\rease\\Downloads\\TheDalles.png");
+	ImageIcon willametteValley = new ImageIcon("C:\\Users\\rease\\Downloads\\WillametteValley.png");
 	
 	ImageIcon FortBridger = new ImageIcon("");
-	ImageIcon BarlowTollRoad = new ImageIcon("C:\\Users\\gemaa\\Downloads\\BarlowTollRoad.png");
+	ImageIcon BarlowTollRoad = new ImageIcon("C:\\Users\\rease\\Downloads\\BarlowTollRoad.png");
 	
 	// make array of the image icons to be used
 	private final ImageIcon[] landmarkImages = 
@@ -361,7 +364,7 @@ public class Landmark extends Location
 	public void lookAroundOption()
 	{
 		String landmarkName = landmarkNames.get(currentIndex);
-		String currentDate = DateString(); // get current date from superclass
+		String currentDate = dateString(); // get current date from superclass
 		
 		 System.out.println("[Photo Placeholder]");
 		 System.out.println("You are at " + landmarkName + ".");
